@@ -42,7 +42,6 @@ Mettre en place une API REST pour :
 ## ▶️ Lancer l'application
 
 ```bash
-# Depuis le terminal
 ./mvnw spring-boot:run
 
 

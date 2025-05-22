@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
-    @Autowired
+
     private final PatientService patientService;
 
     public PatientController(PatientService patientService){
@@ -31,11 +31,6 @@ public class PatientController {
     @PutMapping("/{id}")
     public Patient updatePatient(@PathVariable Long id, @RequestBody Patient patient){
         return patientService.updatePatient(id, patient);
-    }
-
-    @PostMapping("")
-    public Patient save(@RequestBody Patient patient){
-        return patientService.save(patient);
     }
 
     @DeleteMapping("/{id}")

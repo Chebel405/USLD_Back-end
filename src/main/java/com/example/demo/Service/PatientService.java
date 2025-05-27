@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Entity.Patient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,15 @@ import java.util.Optional;
 @ComponentScan
 public interface PatientService {
 
-    Patient createPatient(Patient patient);
+    PatientDTO createPatient(PatientDTO patientDTO);
 
-    List<Patient>findAll();
+    List<PatientDTO>findAll();
 
-    Optional<Patient>findById(Long id);
+    Optional<PatientDTO>findById(Long id);
 
-    Patient save(Patient patient);
+    PatientDTO save(PatientDTO patientDTO);
 
     void deletePatient(Long id);
 
-    Patient updatePatient(Long id, Patient patient);
+    PatientDTO updatePatient(Long id, PatientDTO patientDTO);
 }

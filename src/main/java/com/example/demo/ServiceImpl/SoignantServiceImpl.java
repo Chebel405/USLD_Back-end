@@ -1,9 +1,15 @@
 package com.example.demo.ServiceImpl;
 
 
+import com.example.demo.Dto.PatientDTO;
+import com.example.demo.Dto.SoignantDTO;
+import com.example.demo.Entity.Patient;
 import com.example.demo.Entity.Soignant;
+import com.example.demo.Mapper.SoignantMapper;
+import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.SoignantRepository;
 import com.example.demo.Service.SoignantService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,56 +17,79 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SoignantServiceImpl implements SoignantService {
     private final SoignantRepository soignantRepository;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public SoignantServiceImpl(SoignantRepository soignantRepository) {
+    public SoignantServiceImpl(SoignantRepository soignantRepository, PatientRepository patientRepository) {
         this.soignantRepository = soignantRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
-    public Soignant createSoignant(Soignant soignant) {
-        return soignantRepository.save(soignant);
+    public SoignantDTO createSoignant(SoignantDTO soignantDTO) {
+        Soignant soignant = SoignantMapper.toEntity(soignantDTO, patientRepository);
+        return SoignantMapper.toDTO(soignantRepository.save(soignant));
     }
 
     @Override
-    public List<Soignant> findAll() {
-        return soignantRepository.findAll();
+    public List<SoignantDTO> findAll() {
+        return soignantRepository.findAll()
+                .stream()
+                .map(SoignantMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Soignant> findById(Long id) {
-        return Optional.ofNullable(soignantRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    public Optional<SoignantDTO> findById(Long id) {
+        return soignantRepository.findById(id)
+                .map(SoignantMapper::toDTO);
     }
 
     @Override
-    public Soignant save(Soignant soignant) {
-        return soignantRepository.save(soignant);
+    public SoignantDTO save(SoignantDTO dto) {
+        Soignant entity = SoignantMapper.toEntity(dto, patientRepository);
+        return SoignantMapper.toDTO(soignantRepository.save(entity));
     }
+
+    @Override
+    public SoignantDTO updateSoignant(Long id, SoignantDTO soignantDTO) {
+        Soignant existing = soignantRepository.findById(id)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Soignant non trouvé par ID: " + id));
+
+            existing.setNom(soignantDTO.getNom());
+            existing.setPrenom(soignantDTO.getPrenom());
+            existing.setType(soignantDTO.getType());
+
+
+        // Met à jour la liste des patients (si présente dans le DTO)
+        if (soignantDTO.getPatientsIds() != null) {
+            List<Patient> patients = soignantDTO.getPatientsIds().stream()
+                    .map(pid -> patientRepository.findById(pid).orElse(null))
+                    .filter(p -> p != null)
+                    .collect(Collectors.toList());
+            existing.setPatients(patients);
+        }
+
+        Soignant updated = soignantRepository.save(existing);
+        return SoignantMapper.toDTO(updated);
+
+
+    }
+
+
 
     @Override
     public void deleteSoignant(Long id) {
         soignantRepository.deleteById(id);
     }
 
-    @Override
-    public Soignant updateSoignant(Long id, Soignant soignant) {
-        Optional<Soignant> optionalSoignant = soignantRepository.findById(id);
-        if(optionalSoignant.isPresent()) {
-            Soignant existeSoignant = optionalSoignant.get();
-            existeSoignant.setNom(soignant.getNom());
-            existeSoignant.setPrenom(soignant.getPrenom());
-            existeSoignant.setType(soignant.getType());
-            existeSoignant.setPatients(soignant.getPatients());
 
-            return soignantRepository.save(existeSoignant);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Soignant non trouvé par ID: " + id);
 
-        }
-    }
 
 }

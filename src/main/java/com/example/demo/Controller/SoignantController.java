@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Entity.Patient;
-import com.example.demo.Entity.Soignant;
+import com.example.demo.Dto.SoignantDTO;
 import com.example.demo.Service.SoignantService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +16,23 @@ public class SoignantController {
         this.soignantService = soignantService;
     }
 
-    @GetMapping("")
-    public List<Soignant> findAll(){ return soignantService.findAll();}
+    @GetMapping
+    public List<SoignantDTO> findAll(){
+        return soignantService.findAll();}
+
 
     @GetMapping("/{id}")
-    public Optional<Soignant> findById(@PathVariable Long id){ return soignantService.findById(id);}
+    public Optional<SoignantDTO> findById(@PathVariable Long id){
+        return soignantService.findById(id);}
 
-    @PostMapping("/")
-    public Soignant createSoignant(@RequestBody Soignant soignant){
-        return soignantService.createSoignant(soignant);
+    @PostMapping("")
+    public SoignantDTO createSoignant(@RequestBody SoignantDTO soignantDTO){
+        return soignantService.createSoignant(soignantDTO);
     }
 
     @PutMapping("/{id}")
-    public Soignant updateSoignant(@PathVariable Long id, @RequestBody Soignant soignant){
-        return soignantService.updateSoignant(id, soignant);
+    public SoignantDTO updateSoignant(@PathVariable Long id, @RequestBody SoignantDTO soignantDTO){
+        return soignantService.updateSoignant(id, soignantDTO);
     }
 
     @DeleteMapping("/{id}")

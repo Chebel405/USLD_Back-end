@@ -1,71 +1,71 @@
 package com.example.demo.ServiceImpl;
 
+import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Entity.Patient;
+import com.example.demo.Mapper.PatientMapper;
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.SoignantRepository;
 import com.example.demo.Service.PatientService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
+@Transactional
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final SoignantRepository soignantRepository;
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    public PatientServiceImpl(PatientRepository patientRepository, SoignantRepository soignantRepository) {
         this.patientRepository = patientRepository;
+        this.soignantRepository = soignantRepository;
     }
 
     @Override
-    public Patient createPatient(Patient patient) {
-        return patientRepository.save(patient);
+    public PatientDTO createPatient(PatientDTO patientDTO) {
+        Patient patient = PatientMapper.toEntity(patientDTO, soignantRepository);
+        return PatientMapper.toDTO(patientRepository.save(patient));
     }
 
     @Override
-    public List<Patient> findAll() {
-        return patientRepository.findAll();
+    public List<PatientDTO> findAll() {
+        return patientRepository.findAll()
+                .stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Patient> findById(Long id) {
-        return Optional.ofNullable(patientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    public Optional<PatientDTO> findById(Long id) {
+        return patientRepository.findById(id)
+                .map(PatientMapper::toDTO);
     }
 
     @Override
-    public Patient save(Patient patient) {
-        return patientRepository.save(patient);
+    public PatientDTO save(PatientDTO dto) {
+        Patient entity = PatientMapper.toEntity(dto, soignantRepository);
+        return PatientMapper.toDTO(patientRepository.save(entity));
     }
 
+    @Override
+    public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
+        Patient existing = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient non trouvé"));
+
+        Patient updated = PatientMapper.toEntity(patientDTO, soignantRepository);
+        updated.setId(existing.getId());
+        return PatientMapper.toDTO(patientRepository.save(updated));
+    }
     @Override
     public void deletePatient(Long id) {
+
         patientRepository.deleteById(id);
     }
 
-    @Override
-    public Patient updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
-        Optional<Patient> optionalPatient = patientRepository.findById(id);
-        if(optionalPatient.isPresent()) {
-            Patient existePatient = optionalPatient.get();
-            existePatient.setNom(patient.getNom());
-            existePatient.setPrenom(patient.getPrenom());
-            existePatient.setDateNaissance(patient.getDateNaissance());
-            existePatient.setType(patient.getType());
-            existePatient.setNumeroChambre(patient.getNumeroChambre());
-            existePatient.setNiveauAutonomie(patient.getNiveauAutonomie());
-            existePatient.setToiletteAssistee(patient.getToiletteAssistee());
-            existePatient.setAideHabillage(patient.getAideHabillage());
-            existePatient.setAideRepas(patient.getAideRepas());
-
-            return patientRepository.save(existePatient);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient non trouvé par ID: " + id);
-
-        }
-    }
 }

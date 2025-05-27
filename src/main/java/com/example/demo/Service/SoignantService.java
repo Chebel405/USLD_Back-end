@@ -1,22 +1,24 @@
 package com.example.demo.Service;
 
+import com.example.demo.Dto.SoignantDTO;
 import com.example.demo.Entity.Patient;
 import com.example.demo.Entity.Soignant;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 import java.util.Optional;
-
+@ComponentScan
 public interface SoignantService {
 
-    Soignant createSoignant(Soignant soignant);
+    SoignantDTO createSoignant(SoignantDTO soignantDTO);
 
-    List<Soignant> findAll();
+    List<SoignantDTO>findAll();
 
-    Optional<Soignant> findById(Long id);
+    Optional<SoignantDTO>findById(Long id);
 
-    Soignant save(Soignant soignant);
+    SoignantDTO save(SoignantDTO soignantDTO);
 
     void deleteSoignant(Long id);
 
-    Soignant updateSoignant(Long id, Soignant soignant);
+    SoignantDTO updateSoignant(Long id, SoignantDTO soignantDTO);
 }

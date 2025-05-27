@@ -1,6 +1,7 @@
 package com.example.demo.Configuration;
 
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.SoignantRepository;
 import com.example.demo.Service.PatientService;
 import com.example.demo.ServiceImpl.PatientServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PatientConfiguration {
     @Bean
-    public PatientService patientService(PatientRepository patientRepository){
-        return new PatientServiceImpl(patientRepository);
+    public PatientService patientService(PatientRepository patientRepository, SoignantRepository soignantRepository){
+        return new PatientServiceImpl(patientRepository, soignantRepository);
     }
 }

@@ -8,18 +8,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
+
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nom;
     private String prenom;
+
     private LocalDate dateNaissance;
     @Enumerated(EnumType.STRING)
     private TypePatient type;
@@ -30,4 +32,13 @@ public class Patient {
     private Boolean toiletteAssistee;
     private Boolean aideHabillage;
     private Boolean aideRepas;
+    @ManyToMany
+    @JoinTable(
+            name = "patient_soignant",
+            joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "soignant_id")
+    )
+    private List<Soignant> soignants;
+
+
 }

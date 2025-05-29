@@ -1,6 +1,7 @@
-# 🏥 Gestion des Patients - Application Spring Boot
+# 🏥 Gestion des Soignants et relation avec les Patients - Application Spring Boot
 
 Cette application back-end permet la gestion de différents types de patients dans un établissement médical. Elle est développée avec **Spring Boot**, en suivant une architecture claire et modulaire.
+Cette application gère également les **soignants** (médecins, infirmiers, etc.) pour permettre une prise en charge coordonnée des patients.
 
 ---
 
@@ -8,13 +9,37 @@ Cette application back-end permet la gestion de différents types de patients da
 
 Mettre en place une API REST pour :
 
-- Gérer les informations des patients
+- Gestion des informations des patients.
+- Gestion des informations des soignants.
 - Distinguer les types de patients (USLD, Alzheimer, sans soins)
 - Associer des attributs spécifiques selon leur besoin en soins
-- Préparer une base solide pour une future interface front-end ou application mobile
+- Association de plusieurs soignants à un patient via une relation bidirectionnelle.
+- Chaque patient peut avoir plusieurs soignants référents.
+- Chaque soignant peut avoir plusieurs patients à sa charge.
+- Utilisation de DTOs (Data Transfer Objects) pour gérer la sérialisation des entités et éviter les boucles infinies lors des conversions JSON.
+- Les mappers `PatientMapper` et `SoignantMapper` convertissent les entités en DTOs et inversement, incluant la gestion des listes d’IDs et des objets liés.
+- La relation est persistée grâce à Spring Data JPA, garantissant la cohérence des données en base.
+
 
 ---
 
+### Exemple d’appel API pour créer un patient avec un soignant associé
+
+```bash
+curl -X POST http://localhost:8080/api/patients \
+ -H "Content-Type: application/json" \
+ -d '{
+    "nom": "Dama",
+    "prenom": "Albert",
+    "dateNaissance": "1956-04-30",
+    "type": "AVEC_SOINS",
+    "numeroChambre": 414,
+    "niveauAutonomie": "Faible",
+    "toiletteAssistee": true,
+    "aideHabillage": true,
+    "aideRepas": true,
+    "soignantsIds": [1]
+}'
 
 ---
 
@@ -29,7 +54,7 @@ Mettre en place une API REST pour :
 - Lombok (facultatif)
 - Swagger (optionnel)
 
----
+
 
 ## ⚙️ Prérequis
 

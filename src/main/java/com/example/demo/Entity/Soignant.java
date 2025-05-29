@@ -2,6 +2,7 @@ package com.example.demo.Entity;
 
 
 import com.example.demo.Enums.TypeSoignant;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -26,5 +27,6 @@ public class Soignant {
     private TypeSoignant type;
 
     @ManyToMany(mappedBy = "soignants")
+    @JsonManagedReference
     private List<Patient> patients;
 }

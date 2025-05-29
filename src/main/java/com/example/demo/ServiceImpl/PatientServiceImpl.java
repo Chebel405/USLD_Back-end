@@ -15,12 +15,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional // Assure que toutes les méthodes sont exécutées dans un contexte transactionnel
+
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final SoignantRepository soignantRepository;
 
+    // Injection des dépendances via le constructeur
     @Autowired
     public PatientServiceImpl(PatientRepository patientRepository, SoignantRepository soignantRepository) {
         this.patientRepository = patientRepository;
@@ -58,6 +60,7 @@ public class PatientServiceImpl implements PatientService {
         Patient existing = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient non trouvé"));
 
+        // Conversion DTO → Entity avec les nouveaux champs
         Patient updated = PatientMapper.toEntity(patientDTO, soignantRepository);
         updated.setId(existing.getId());
         return PatientMapper.toDTO(patientRepository.save(updated));

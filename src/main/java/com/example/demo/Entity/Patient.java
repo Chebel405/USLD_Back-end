@@ -1,6 +1,8 @@
 package com.example.demo.Entity;
 
 import com.example.demo.Enums.TypePatient;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -38,6 +40,7 @@ public class Patient {
             joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "soignant_id")
     )
+    @JsonBackReference
     private List<Soignant> soignants;
 
 

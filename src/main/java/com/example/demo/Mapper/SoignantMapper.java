@@ -1,15 +1,24 @@
 package com.example.demo.Mapper;
 
+
 import com.example.demo.Dto.SoignantDTO;
 import com.example.demo.Entity.Soignant;
 import com.example.demo.Entity.Patient;
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Mapper.PatientMapper;
+
+
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SoignantMapper {
-    // Entity => DTO
+
+    /**
+     * Convertit un objet Soignant (Entity) en SoignantDTO.
+     * @param soignant l'entité Soignant à convertir
+     * @return l'objet SoignantDTO correspondant
+     */
     public static SoignantDTO toDTO(Soignant soignant) {
         if (soignant == null) return null;
 
@@ -19,18 +28,27 @@ public class SoignantMapper {
         dto.setPrenom(soignant.getPrenom());
         dto.setType(soignant.getType());
 
-        // ⬇️ Ajout du mapping de la liste des patients
+        // Récupération des IDs des patients associés
         if (soignant.getPatients() != null) {
             List<Long> ids = soignant.getPatients()
                     .stream()
                     .map(Patient::getId)
                     .collect(Collectors.toList());
             dto.setPatientsIds(ids);
+
         }
+
         return dto;
     }
 
-    // DTO => Entity
+    /**
+     * Convertit un SoignantDTO en Soignant (Entity).
+     * Récupère les objets Patient associés via leurs IDs (patientsIds).
+     *
+     * @param dto le DTO à convertir
+     * @param patientRepository le repository utilisé pour charger les patients par ID
+     * @return l'entité Soignant correspondante
+     */
     public static Soignant toEntity(SoignantDTO dto, PatientRepository patientRepository){
         if(dto == null) return null;
 
@@ -40,7 +58,7 @@ public class SoignantMapper {
         soignant.setPrenom(dto.getPrenom());
         soignant.setType(dto.getType());
 
-        // ⬇️ Ajout de la conversion des IDs en objets Soignant
+        // Conversion des patientsIds en objets Patient
         if (dto.getPatientsIds() != null) {
             List<Patient> patients = dto.getPatientsIds().stream()
                     .map(id -> patientRepository.findById(id).orElse(null))

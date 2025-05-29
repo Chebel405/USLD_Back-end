@@ -39,7 +39,7 @@ public class SoignantServiceImpl implements SoignantService {
 
     @Override
     public List<SoignantDTO> findAll() {
-        return soignantRepository.findAll()
+        return soignantRepository.findAllWithPatients()
                 .stream()
                 .map(SoignantMapper::toDTO)
                 .collect(Collectors.toList());
@@ -74,6 +74,14 @@ public class SoignantServiceImpl implements SoignantService {
                     .filter(p -> p != null)
                     .collect(Collectors.toList());
             existing.setPatients(patients);
+
+            // Synchroniser côté patient -> ajouter le soignant à chaque patient
+            for (Patient p : patients) {
+                if (!p.getSoignants().contains(existing)) {
+                    p.getSoignants().add(existing);
+                    patientRepository.save(p);
+                }
+            }
         }
 
         Soignant updated = soignantRepository.save(existing);

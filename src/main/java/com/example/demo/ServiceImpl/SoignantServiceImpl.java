@@ -1,7 +1,6 @@
 package com.example.demo.ServiceImpl;
 
 
-import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Dto.SoignantDTO;
 import com.example.demo.Entity.Patient;
 import com.example.demo.Entity.Soignant;

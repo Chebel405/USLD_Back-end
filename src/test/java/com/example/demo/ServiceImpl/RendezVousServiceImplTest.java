@@ -108,6 +108,50 @@ public class RendezVousServiceImplTest {
         assertEquals(id, result.get().getId());
         assertEquals("Radiologie", result.get().getMotif());
 
+    }
+
+    @Test
+    void testUpdateRendezVous(){
+        Long id = 10L;
+
+        RendezVousDTO inputDto = new RendezVousDTO();
+        inputDto.setId(id);
+        inputDto.setDateHeure(LocalDateTime.of(2025,7,10,14, 0));
+        inputDto.setMotif("Chirurgie de contrôle");
+        inputDto.setPatientId(1L);
+        inputDto.setSoignantId(2L);
+        inputDto.setSoinId(3L);
+
+        Patient patient = new Patient();
+        patient.setId(1L);
+
+        Soignant soignant = new Soignant();
+        soignant.setId(2L);
+
+        Soin soin = new Soin();
+        soin.setId(3L);
+
+        RendezVous existingRdv = new RendezVous();
+        existingRdv.setId(id);
+        existingRdv.setDateHeure(LocalDateTime.of(2025,7,1,9,0));
+        existingRdv.setMotif("Ancien motif");
+        existingRdv.setPatient(patient);
+        existingRdv.setSoignant(soignant);
+        existingRdv.setSoin(soin);
+
+        when(rendezVousRepository.findById(id)).thenReturn(Optional.of(existingRdv));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(soignantRepository.findById(2L)).thenReturn(Optional.of(soignant));
+        when(soinRepository.findById(3L)).thenReturn(Optional.of(soin));
+        when(rendezVousRepository.save(any(RendezVous.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        RendezVousDTO result = rendezVousService.updateRendezVous(id, inputDto);
+
+        assertNotNull(result);
+        assertEquals("Chirurgie de contrôle", result.getMotif());
+        assertEquals(LocalDateTime.of(2025, 7, 10, 14, 0), result.getDateHeure());
+        verify(rendezVousRepository).save(any(RendezVous.class));
+
 
     }
 

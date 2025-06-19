@@ -42,5 +42,9 @@ public class Patient {
     @JsonBackReference
     private List<Soignant> soignants;
 
+    @OneToMany(mappedBy = "patient")
+    private List<RendezVous> rendezVousList;
+
+
 
 }

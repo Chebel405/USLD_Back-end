@@ -29,4 +29,8 @@ public class Soignant {
     @ManyToMany(mappedBy = "soignants")
     @JsonManagedReference
     private List<Patient> patients;
+
+    @OneToMany(mappedBy = "soignant")
+    private List<RendezVous> rendezVousList;
+
 }

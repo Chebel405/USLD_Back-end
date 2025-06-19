@@ -31,4 +31,6 @@ public class PatientDTO {
 
     // Liste des soignants complets associés (optionnel, selon les besoins du front)
     private List<SoignantDTO> soignants;
+
+    private List<RendezVousDTO> rendezVousDTOList;
 }

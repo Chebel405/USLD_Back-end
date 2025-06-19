@@ -1,34 +1,35 @@
 package com.example.demo.Entity;
 
-import com.example.demo.Enums.TypeSoins;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-@Data
+import java.time.LocalDateTime;
+
 @Entity
+@Data
 @NoArgsConstructor
-public class Soin {
+@AllArgsConstructor
+public class RendezVous {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate date;
 
-    @Enumerated(EnumType.STRING)
-    private TypeSoins type;
+    private LocalDateTime dateHeure;
 
-    private String description;
+    private String motif;
 
     @ManyToOne
-    @JoinColumn(name="patient_id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "soignant_id")
     private Soignant soignant;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "soin_id")
     private Soin soin;
 

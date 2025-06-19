@@ -18,6 +18,7 @@ public class SoignantDTO {
     private TypeSoignant type;
 
     private List<Long> patientsIds;
+    private List<RendezVousDTO> rendezVousDTOList;
 
 
 }

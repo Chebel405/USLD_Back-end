@@ -1,7 +1,6 @@
-# 🏥 Gestion des Soignants et relation avec les Patients - Application Spring Boot
+# 🏥 Gestion des Soignants, Patients et Rendez-vous - Application Spring Boot
 
-Cette application back-end permet la gestion de différents types de patients dans un établissement médical. Elle est développée avec **Spring Boot**, en suivant une architecture claire et modulaire.
-Cette application gère également les **soignants** (médecins, infirmiers, etc.) pour permettre une prise en charge coordonnée des patients.
+Cette application back-end permet la gestion de différents types de patients dans un établissement médical, en incluant la planification des **rendez-vous médicaux** entre les patients et les soignants. Elle est développée avec **Spring Boot**, en suivant une architecture claire et modulaire.
 
 ---
 
@@ -9,37 +8,32 @@ Cette application gère également les **soignants** (médecins, infirmiers, etc
 
 Mettre en place une API REST pour :
 
-- Gestion des informations des patients.
-- Gestion des informations des soignants.
+- Gestion des informations des **patients**
+- Gestion des informations des **soignants**
+- Gestion des **rendez-vous** entre patients et soignants
+- Gestion des **soins effectués** dans le cadre des rendez-vous
 - Distinguer les types de patients (USLD, Alzheimer, sans soins)
 - Associer des attributs spécifiques selon leur besoin en soins
-- Association de plusieurs soignants à un patient via une relation bidirectionnelle.
-- Chaque patient peut avoir plusieurs soignants référents.
-- Chaque soignant peut avoir plusieurs patients à sa charge.
-- Utilisation de DTOs (Data Transfer Objects) pour gérer la sérialisation des entités et éviter les boucles infinies lors des conversions JSON.
-- Les mappers `PatientMapper` et `SoignantMapper` convertissent les entités en DTOs et inversement, incluant la gestion des listes d’IDs et des objets liés.
-- La relation est persistée grâce à Spring Data JPA, garantissant la cohérence des données en base.
-
+- Association de plusieurs soignants à un patient via une relation bidirectionnelle
+- Utilisation de DTOs (Data Transfer Objects) pour gérer la sérialisation des entités et éviter les boucles infinies lors des conversions JSON
+- Les mappers convertissent les entités en DTOs et inversement, incluant la gestion des listes d’IDs et des objets liés
+- La relation est persistée grâce à Spring Data JPA, garantissant la cohérence des données en base
 
 ---
 
-### Exemple d’appel API pour créer un patient avec un soignant associé
+## 🗓️ Exemple d’appel API pour créer un rendez-vous
 
 ```bash
-curl -X POST http://localhost:8080/api/patients \
+curl -X POST http://localhost:8081/rendezvous \
  -H "Content-Type: application/json" \
  -d '{
-    "nom": "Dama",
-    "prenom": "Albert",
-    "dateNaissance": "1956-04-30",
-    "type": "AVEC_SOINS",
-    "numeroChambre": 414,
-    "niveauAutonomie": "Faible",
-    "toiletteAssistee": true,
-    "aideHabillage": true,
-    "aideRepas": true,
-    "soignantsIds": [1]
+    "dateHeure": "2025-07-01T10:30:00",
+    "motif": "Consultation ORL",
+    "patientId": 1,
+    "soignantId": 2,
+    "soinId": 1
 }'
+```
 
 ---
 
@@ -54,7 +48,7 @@ curl -X POST http://localhost:8080/api/patients \
 - Lombok (facultatif)
 - Swagger (optionnel)
 
-
+---
 
 ## ⚙️ Prérequis
 
@@ -68,5 +62,4 @@ curl -X POST http://localhost:8080/api/patients \
 
 ```bash
 ./mvnw spring-boot:run
-
-
+```

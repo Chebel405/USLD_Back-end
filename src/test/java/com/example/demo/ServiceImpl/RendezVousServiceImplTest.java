@@ -15,14 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
+
 @ExtendWith(MockitoExtension.class)
 public class RendezVousServiceImplTest {
 
@@ -79,6 +78,37 @@ public class RendezVousServiceImplTest {
         assertEquals(10L, result.getId());
         assertEquals("Consultation", result.getMotif());
         verify(rendezVousRepository).save(any(RendezVous.class));
+    }
+
+    @Test
+    void testGetRendezVousByIdWhenExists(){
+
+        Long id = 10L;
+
+        Patient patient = new Patient();
+        patient.setId(1L);
+        Soignant soignant = new Soignant();
+        soignant.setId(2L);
+        Soin soin = new Soin();
+        soin.setId(3L);
+
+        RendezVous rendezVous = new RendezVous();
+        rendezVous.setId(id);
+        rendezVous.setDateHeure(LocalDateTime.of(2025, 7, 10, 9, 0));
+        rendezVous.setMotif("Radiologie");
+        rendezVous.setPatient(patient);
+        rendezVous.setSoignant(soignant);
+        rendezVous.setSoin(soin);
+
+        when(rendezVousRepository.findById(id)).thenReturn(Optional.of(rendezVous));
+
+        Optional<RendezVousDTO> result = rendezVousService.getRendezVousById(id);
+
+        assertTrue(result.isPresent());
+        assertEquals(id, result.get().getId());
+        assertEquals("Radiologie", result.get().getMotif());
+
+
     }
 
 

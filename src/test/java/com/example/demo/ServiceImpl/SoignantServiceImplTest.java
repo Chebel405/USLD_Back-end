@@ -1,12 +1,8 @@
 package com.example.demo.ServiceImpl;
 
-import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Dto.SoignantDTO;
-import com.example.demo.Entity.Patient;
 import com.example.demo.Entity.Soignant;
-import com.example.demo.Enums.TypePatient;
 import com.example.demo.Enums.TypeSoignant;
-import com.example.demo.Mapper.PatientMapper;
 import com.example.demo.Mapper.SoignantMapper;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.SoignantRepository;
@@ -16,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.List;
 

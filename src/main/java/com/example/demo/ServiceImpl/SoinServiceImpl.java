@@ -16,6 +16,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service d'implémentation pour la gestion des soins.
+ * Fournit les opérations CRUD sur les entités de type Soin, avec mise à jour des relations
+ * entre patients et soignants.
+ *
+ * Utilise les repositories : SoinRepository, PatientRepository, SoignantRepository.
+ * S'appuie sur SoinMapper pour la conversion entre entités et DTOs.
+ */
+
 @Service
 @Transactional
 public class SoinServiceImpl implements SoinService {

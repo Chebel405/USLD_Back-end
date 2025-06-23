@@ -8,7 +8,9 @@ import com.example.demo.Repository.SoignantRepository;
 import com.example.demo.Service.PatientService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +60,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
         Patient existing = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient non trouvé avec l'ID: " + id));
 
         // Conversion DTO → Entity avec les nouveaux champs
         Patient updated = PatientMapper.toEntity(patientDTO, soignantRepository);

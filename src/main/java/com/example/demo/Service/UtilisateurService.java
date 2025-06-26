@@ -1,6 +1,5 @@
 package com.example.demo.Service;
 
-import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Dto.UtilisateurDTO;
 
 import java.util.List;
@@ -18,4 +17,5 @@ public interface UtilisateurService {
     void deleteUtilisateur(Long id);
 
     UtilisateurDTO updateUtilisateur(Long id, UtilisateurDTO utilisateurDTO);
+
 }

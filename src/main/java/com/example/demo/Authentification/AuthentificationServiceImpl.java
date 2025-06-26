@@ -1,10 +1,8 @@
 package com.example.demo.Authentification;
 
-import com.example.demo.Authentification.AuthentificationResponseDTO;
-import com.example.demo.Authentification.LoginRequestDTO;
-import com.example.demo.Authentification.RegisterRequestDTO;
 import com.example.demo.Entity.Utilisateur;
 import com.example.demo.Repository.UtilisateurRepository;
+import com.example.demo.Security.Jwt.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +11,12 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthentificationServiceImpl(UtilisateurRepository utilisateurRepository, PasswordEncoder passwordEncoder) {
+    public AuthentificationServiceImpl(UtilisateurRepository utilisateurRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.utilisateurRepository = utilisateurRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -29,16 +29,17 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
         utilisateurRepository.save(utilisateur);
 
-        // Simulation de la génération d’un JWT
-        String token = "JWT_TOKEN_EN_ATTENTE";
+        String token = jwtService.generateToken(utilisateur.getEmail());
+
         return new AuthentificationResponseDTO(token);
 
     }
 
     @Override
     public AuthentificationResponseDTO login(LoginRequestDTO request) {
-        // Simulation pour l’instant
-        String token = "JWT_TOKEN_LOGIN";
+
+        String token = jwtService.generateToken(request.getEmail());
+
         return new AuthentificationResponseDTO(token);
     }
 }

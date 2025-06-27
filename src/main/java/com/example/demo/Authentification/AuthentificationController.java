@@ -3,6 +3,11 @@ package com.example.demo.Authentification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Contrôleur REST pour gérer les opérations d'authentification.
+ * Fournit deux routes : /auth/register et /auth/login.
+ */
+
 @RestController
 @RequestMapping("/auth")
 public class AuthentificationController {
@@ -23,7 +28,7 @@ public class AuthentificationController {
     }
 
     /**
-     * Authentifie un utilisateur et retourne un JWT.
+     * Authentifie un utilisateur avec email/mot de passe et retourne un JWT s’il est valide.
      */
     @PostMapping("/login")
     public ResponseEntity<AuthentificationResponseDTO> login(@RequestBody LoginRequestDTO request) {

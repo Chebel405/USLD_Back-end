@@ -21,7 +21,7 @@ public class JwtService {
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
-     * Génère un JWT pour l'email donné.
+     * Génère un token JWT avec l’email comme "subject", une date d’émission et une expiration.
      */
     public String generateToken(String email) {
         return Jwts.builder()
@@ -40,7 +40,7 @@ public class JwtService {
     }
 
     /**
-     * Vérifie si le token est toujours valide.
+     * Vérifie que l’email du token correspond à celui de l’utilisateur et que le token n’est pas expiré.
      */
     public boolean isTokenValide(String token, UserDetails userDetails) {
         String extractedEmail = extractUsername(token);

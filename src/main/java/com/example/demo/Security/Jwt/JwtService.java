@@ -12,16 +12,28 @@ import java.util.Date;
 import java.util.function.Function;
 
 /**
- * Service responsable de la création et validation des tokens JWT.
+ * Service responsable de la génération et de la validation des tokens JWT.
+ * Il permet de :
+ * <ul>
+ *     <li>Générer un token JWT pour un utilisateur donné</li>
+ *     <li>Extraire des informations du token (comme l’email)</li>
+ *     <li>Vérifier la validité d’un token (expiration, correspondance utilisateur...)</li>
+ * </ul>
  */
 @Service
 public class JwtService {
 
-    // Clé secrète pour signer le token (en réalité, stocke ça dans un fichier sécurisé !)
+    /**
+     * Clé secrète utilisée pour signer et valider les JWT.
+     * ⚠️ À sécuriser dans un fichier .env ou un Vault sécurisé en production.
+     */
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
-     * Génère un token JWT avec l’email comme "subject", une date d’émission et une expiration.
+     * Génère un token JWT basé sur l'email de l'utilisateur.
+     *
+     * @param email Email de l'utilisateur à inclure dans le token.
+     * @return JWT signé.
      */
     public String generateToken(String email) {
         return Jwts.builder()
@@ -33,14 +45,25 @@ public class JwtService {
     }
 
     /**
-     * Extrait l'email de l'utilisateur (subject) depuis le token JWT.
+     * Extrait le nom d'utilisateur (email) du token.
+     *
+     * @param token JWT reçu.
+     * @return Email extrait du token.
      */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     /**
-     * Vérifie que l’email du token correspond à celui de l’utilisateur et que le token n’est pas expiré.
+     * Vérifie si le token est valide :
+     * <ul>
+     *     <li>L'email dans le token correspond à celui de l'utilisateur</li>
+     *     <li>Le token n'est pas expiré</li>
+     * </ul>
+     *
+     * @param token        JWT à valider.
+     * @param userDetails  Détails de l'utilisateur attendu.
+     * @return true si valide, false sinon.
      */
     public boolean isTokenValide(String token, UserDetails userDetails) {
         String extractedEmail = extractUsername(token);
@@ -49,7 +72,10 @@ public class JwtService {
 
 
     /**
-     * Vérifie la date d’expiration du token.
+     * Vérifie si le token est expiré.
+     *
+     * @param token JWT à vérifier.
+     * @return true si expiré, false sinon.
      */
     private boolean isTokenExpired(String token) {
         Date expiration = extractClaim(token, Claims::getExpiration);
@@ -57,7 +83,12 @@ public class JwtService {
     }
 
     /**
-     * Méthode générique pour extraire une information du token (comme l’email, la date…).
+     * Méthode utilitaire pour extraire une information (claim) du token.
+     *
+     * @param token          JWT à analyser.
+     * @param claimsResolver Fonction qui récupère un champ spécifique de Claims.
+     * @param <T>            Type de la donnée extraite.
+     * @return Donnée extraite.
      */
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = Jwts

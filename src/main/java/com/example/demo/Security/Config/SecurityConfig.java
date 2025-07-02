@@ -16,6 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration principale de Spring Security.
+ * <p>
+ * Cette classe :
+ * - Définit les règles de sécurité pour les routes HTTP
+ * - Configure le filtre JWT pour intercepter les requêtes
+ * - Configure la gestion de l’authentification (DAO, encoder, etc.)
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -28,13 +36,27 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Configure les règles de sécurité HTTP :
+     * - Désactive CSRF (inutile pour une API REST stateless)
+     * - Autorise l’accès libre à l’authentification et à la documentation Swagger
+     * - Protège toutes les autres routes avec authentification
+     * - Utilise un filtre JWT + une session stateless
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable()) // désactive CSRF pour les API REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login").permitAll() // accès libre
-                        .anyRequest().authenticated() // toutes les autres requêtes sont protégées
+                        .requestMatchers(
+                                "/auth/register",
+                                "/auth/login",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll() // accès libre aux routes Swagger + login/register
+                        .anyRequest().authenticated() // le reste est sécurisé
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // pas de session
                 .authenticationProvider(authenticationProvider())
@@ -42,6 +64,11 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * Définit la stratégie d’authentification utilisée (DAO basé sur UserDetailsService + passwordEncoder).
+     *
+     * @return AuthenticationProvider prêt à l’emploi.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -50,11 +77,23 @@ public class SecurityConfig {
         return provider;
     }
 
+    /**
+     * Encodeur de mot de passe BCrypt, robuste et recommandé.
+     *
+     * @return Encodeur BCrypt.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // encodage des mots de passe
     }
 
+    /**
+     * Fournit un gestionnaire d’authentification utilisé pour la connexion manuelle (/login).
+     *
+     * @param config Configuration Spring
+     * @return AuthenticationManager
+     * @throws Exception en cas d’erreur
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager(); // pour l’authentification manuelle (login)

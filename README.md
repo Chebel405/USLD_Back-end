@@ -1,23 +1,20 @@
-# 🏥 Gestion des Soignants, Patients et Rendez-vous - Application Spring Boot
+# 🏥 USLD_Back-end – Gestion des Soignants, Patients, Soins et Rendez-vous
 
-Cette application back-end permet la gestion de différents types de patients dans un établissement médical, en incluant la planification des **rendez-vous médicaux** entre les patients et les soignants. Elle est développée avec **Spring Boot**, en suivant une architecture claire et modulaire.
+Ce dépôt contient le **backend** de l'application *USLD* (*Unité de Soins de Longue Durée*), développée avec **Spring Boot 3**.  
+Il fournit une API REST pour gérer les patients, les soignants, les soins et les rendez-vous médicaux.
 
 ---
 
-## 📚 Objectif du projet
+## 🎯 Objectif du projet
 
-Mettre en place une API REST pour :
-
-- Gestion des informations des **patients**
-- Gestion des informations des **soignants**
-- Gestion des **rendez-vous** entre patients et soignants
-- Gestion des **soins effectués** dans le cadre des rendez-vous
-- Distinguer les types de patients (USLD, Alzheimer, sans soins)
-- Associer des attributs spécifiques selon leur besoin en soins
-- Association de plusieurs soignants à un patient via une relation bidirectionnelle
-- Utilisation de DTOs (Data Transfer Objects) pour gérer la sérialisation des entités et éviter les boucles infinies lors des conversions JSON
-- Les mappers convertissent les entités en DTOs et inversement, incluant la gestion des listes d’IDs et des objets liés
-- La relation est persistée grâce à Spring Data JPA, garantissant la cohérence des données en base
+- 📋 Gestion des informations des **patients** (type USLD, Alzheimer, sans soins)
+- 👨‍⚕️ Gestion des **soignants** (association à plusieurs patients)
+- 📆 Gestion des **rendez-vous médicaux**
+- 💊 Suivi des **soins effectués**
+- 🔄 Association entre entités (relation bidirectionnelle)
+- 📦 Utilisation de **DTOs** pour contrôler les données exposées
+- 🔁 Mapping entité/DTO avec gestion des listes et objets liés
+- 💾 Persistance via **Spring Data JPA** avec gestion de la cohérence
 
 ---
 
@@ -42,9 +39,9 @@ curl -X POST http://localhost:8081/rendezvous \
 - Java 21
 - Spring Boot 3.4.5
 - Maven
-- Spring Web
-- Spring Data JPA
-- H2 ou MySQL (selon config)
+- Spring Web (REST API)
+- Spring Data JPA (persistances)
+- H2 ou MySQL (selon configuration)
 - Lombok (facultatif)
 - Swagger (optionnel)
 

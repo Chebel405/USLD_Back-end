@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Dto.PatientDTO;
 import com.example.demo.Dto.UtilisateurDTO;
 import com.example.demo.Service.UtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;

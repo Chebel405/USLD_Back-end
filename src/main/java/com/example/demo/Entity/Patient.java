@@ -1,17 +1,26 @@
 package com.example.demo.Entity;
 
-import com.example.demo.Enums.TypePatient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PatientUSLD.class, name = "patientUSLD"),
+        @JsonSubTypes.Type(value = PatientAlzheimer.class, name = "patientAlzheimer"),
+        @JsonSubTypes.Type(value = PatientSansSoin.class, name = "patientSansSoin")
+})
 @Data
 @NoArgsConstructor
 
@@ -24,8 +33,6 @@ public class Patient {
     private String prenom;
 
     private LocalDate dateNaissance;
-    @Enumerated(EnumType.STRING)
-    private TypePatient type;
 
     private Integer numeroChambre;
     private String niveauAutonomie;

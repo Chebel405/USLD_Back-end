@@ -32,6 +32,10 @@ public class SoignantServiceImpl implements SoignantService {
 
     @Override
     public SoignantDTO createSoignant(SoignantDTO soignantDTO) {
+        // Vérifie si le numéro de soignant est déjà utilisé
+        if (soignantRepository.existsByNumeroSoignant(soignantDTO.getNumeroSoignant())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Numéro soignant déjà utilisé");
+        }
         Soignant soignant = SoignantMapper.toEntity(soignantDTO, patientRepository);
         return SoignantMapper.toDTO(soignantRepository.save(soignant));
     }

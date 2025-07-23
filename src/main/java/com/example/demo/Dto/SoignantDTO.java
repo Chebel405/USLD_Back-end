@@ -13,6 +13,10 @@ public class SoignantDTO {
     @Schema(description = "Identifiant unique du soignant", example = "1")
     private Long id;
 
+    @Schema(description = "Numéros unique du soignant", example = "1")
+    private String numeroSoignant;
+
+
     @Schema(description = "Nom du soignant", example = "Dupont")
     private String nom;
 

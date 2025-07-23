@@ -10,6 +10,9 @@ import lombok.Data;
 @Schema(description = "Données nécessaires pour enregistrer un nouvel utilisateur.")
 public class RegisterRequestDTO {
 
+    @Schema(description = "Nom de l'utilisateur", example = "Durand", required = true)
+    private String nom;
+
     @Schema(description = "Adresse email de l'utilisateur", example = "soignant1@hopital.fr", required = true)
     private String email;
 

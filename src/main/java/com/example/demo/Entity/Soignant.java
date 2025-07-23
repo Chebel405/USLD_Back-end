@@ -20,6 +20,9 @@ public class Soignant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String numeroSoignant;
+
     private String nom;
     private String prenom;
 

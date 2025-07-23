@@ -52,15 +52,21 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        // ✅ Ignore JWT pour les routes publiques
+        if (path.startsWith("/auth/login") || path.startsWith("/auth/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        // Vérifie la présence et le format correct du header "Authorization"
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extrait le token
         String token = authHeader.substring(7);
         String email = jwtService.extractUsername(token);
 
@@ -78,4 +84,5 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

@@ -11,5 +11,7 @@ import java.util.List;
 public interface SoignantRepository extends JpaRepository<Soignant, Long> {
     @Query("SELECT s FROM Soignant s LEFT JOIN FETCH s.patients")
     List<Soignant> findAllWithPatients();
+    boolean existsByNumeroSoignant(String numeroSoignant);
+
 
 }

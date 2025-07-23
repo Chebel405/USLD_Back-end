@@ -26,6 +26,7 @@ public class SoignantMapper {
         dto.setId(soignant.getId());
         dto.setNom(soignant.getNom());
         dto.setPrenom(soignant.getPrenom());
+        dto.setNumeroSoignant(soignant.getNumeroSoignant());
         dto.setType(soignant.getType());
 
         // Récupération des IDs des patients associés
@@ -56,6 +57,7 @@ public class SoignantMapper {
         soignant.setId(dto.getId());
         soignant.setNom(dto.getNom());
         soignant.setPrenom(dto.getPrenom());
+        soignant.setNumeroSoignant(dto.getNumeroSoignant());
         soignant.setType(dto.getType());
 
         // Conversion des patientsIds en objets Patient

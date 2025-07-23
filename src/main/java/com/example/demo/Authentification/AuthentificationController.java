@@ -53,14 +53,14 @@ public class AuthentificationController {
             @ApiResponse(responseCode = "403", description = "Accès interdit - identifiants invalides", content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthentificationResponseDTO> login(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Identifiants de connexion (email et mot de passe)",
-            required = true,
-            content = @Content(schema = @Schema(implementation = LoginRequestDTO.class))
-            )
-            @RequestBody LoginRequestDTO request) {
+     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
         AuthentificationResponseDTO response = authService.login(request);
+
+        if (response == null || response.getToken() == null) {
+            return ResponseEntity.status(403).body("Identifiants invalides");
+        }
+
         return ResponseEntity.ok(response);
     }
+
 }

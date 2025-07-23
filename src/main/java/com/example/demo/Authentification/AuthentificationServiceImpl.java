@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+
+
 /**
  * Implémentation de la logique d'authentification.
  * Gère l'enregistrement et la connexion des utilisateurs avec génération de JWT.
@@ -32,6 +34,7 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     public AuthentificationResponseDTO register(RegisterRequestDTO request) {
         // Création d’un nouvel utilisateur avec mot de passe encodé
         Utilisateur utilisateur = Utilisateur.builder()
+                .nom(request.getNom())
                 .email(request.getEmail())
                 .motDePasse(passwordEncoder.encode(request.getMotDePasse()))
                 .build();
@@ -50,8 +53,17 @@ public class AuthentificationServiceImpl implements AuthentificationService {
      */
     @Override
     public AuthentificationResponseDTO login(LoginRequestDTO request) {
+        // Recherche de l'utilisateur par email
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        String token = jwtService.generateToken(request.getEmail());
+        // Vérifie si le mot de passe est correct
+        if (!passwordEncoder.matches(request.getMotDePasse(), utilisateur.getMotDePasse())) {
+            throw new RuntimeException("Mot de passe incorrect");
+        }
+
+        // Si OK, on génère un token JWT
+        String token = jwtService.generateToken(utilisateur.getEmail());
 
         return new AuthentificationResponseDTO(token);
     }

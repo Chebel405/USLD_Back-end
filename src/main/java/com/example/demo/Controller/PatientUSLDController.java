@@ -44,4 +44,10 @@ public class PatientUSLDController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @GetMapping("/search/nom")
+    public List<PatientUSLDDTO> findByNom(@RequestParam String nom) {
+        return service.findByNom(nom);
+    }
+
 }

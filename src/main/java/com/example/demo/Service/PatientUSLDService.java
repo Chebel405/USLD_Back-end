@@ -8,5 +8,6 @@ public interface PatientUSLDService {
     List<PatientUSLDDTO> findAll();
     PatientUSLDDTO findById(Long id);
     PatientUSLDDTO update(Long id, PatientUSLDDTO dto);
+    List<PatientUSLDDTO> findByNom(String nom);
     void delete(Long id);
 }

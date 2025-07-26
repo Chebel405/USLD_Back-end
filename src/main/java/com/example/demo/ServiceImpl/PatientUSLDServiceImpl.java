@@ -53,4 +53,13 @@ public class PatientUSLDServiceImpl implements PatientUSLDService {
     public void delete(Long id) {
         patientRepository.deleteById(id);
     }
+
+    @Override
+    public List<PatientUSLDDTO> findByNom(String nom) {
+        return patientRepository.findAll().stream()
+                .filter(p -> p instanceof PatientUSLD && p.getNom().equalsIgnoreCase(nom))
+                .map(p -> PatientMapper.toDTO((PatientUSLD) p))
+                .collect(Collectors.toList());
+    }
+
 }

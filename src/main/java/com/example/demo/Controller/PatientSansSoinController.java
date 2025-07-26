@@ -4,6 +4,7 @@ import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Service.PatientSansSoinService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,11 @@ public class PatientSansSoinController {
     public PatientSansSoinDTO update(@PathVariable Long id, @RequestBody PatientSansSoinDTO dto) {
         return service.update(id, dto);
     }
+    @GetMapping("/search/nom")
+    public ResponseEntity<List<PatientSansSoinDTO>> findByNom(@RequestParam String nom) {
+        return ResponseEntity.ok(service.findByNom(nom));
+    }
+
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {

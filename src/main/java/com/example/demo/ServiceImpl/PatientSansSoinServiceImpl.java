@@ -8,6 +8,8 @@ import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Service.PatientSansSoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.Repository.PatientSansSoinRepository;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +19,10 @@ public class PatientSansSoinServiceImpl implements PatientSansSoinService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private PatientSansSoinRepository patientSansSoinRepository;
+
 
     @Override
     public PatientSansSoinDTO create(PatientSansSoinDTO dto) {
@@ -47,6 +53,13 @@ public class PatientSansSoinServiceImpl implements PatientSansSoinService {
         PatientSansSoin updated = PatientMapper.toEntity(dto);
         updated.setId(existing.getId());
         return PatientMapper.toDTO(patientRepository.save(updated));
+    }
+    @Override
+    public List<PatientSansSoinDTO> findByNom(String nom) {
+        return patientSansSoinRepository.findByNomContainingIgnoreCase(nom)
+                .stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

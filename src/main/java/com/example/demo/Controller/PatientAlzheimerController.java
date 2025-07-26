@@ -1,9 +1,11 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Dto.PatientAlzheimerDTO;
+import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Service.PatientAlzheimerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +40,10 @@ public class PatientAlzheimerController {
     @PutMapping("/{id}")
     public PatientAlzheimerDTO update(@PathVariable Long id, @RequestBody PatientAlzheimerDTO dto) {
         return service.update(id, dto);
+    }
+    @GetMapping("/search/nom")
+    public ResponseEntity<List<PatientAlzheimerDTO>> findByNom(@RequestParam String nom) {
+        return ResponseEntity.ok(service.findByNom(nom));
     }
 
     @DeleteMapping("/{id}")

@@ -9,5 +9,6 @@ public interface PatientSansSoinService {
     List<PatientSansSoinDTO> findAll();
     PatientSansSoinDTO findById(Long id);
     PatientSansSoinDTO update(Long id, PatientSansSoinDTO dto);
+    List<PatientSansSoinDTO> findByNom(String nom);
     void delete(Long id);
 }

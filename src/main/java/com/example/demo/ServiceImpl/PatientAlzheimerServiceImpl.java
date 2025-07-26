@@ -2,9 +2,12 @@
 package com.example.demo.ServiceImpl;
 
 import com.example.demo.Dto.PatientAlzheimerDTO;
+import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Entity.PatientAlzheimer;
 import com.example.demo.Mapper.PatientMapper;
+import com.example.demo.Repository.PatientAlzheimerRepository;
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.PatientSansSoinRepository;
 import com.example.demo.Service.PatientAlzheimerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private PatientAlzheimerRepository patientAlzheimerRepository;
 
     @Override
     public PatientAlzheimerDTO create(PatientAlzheimerDTO dto) {
@@ -47,6 +53,14 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
         PatientAlzheimer updated = PatientMapper.toEntity(dto);
         updated.setId(existing.getId());
         return PatientMapper.toDTO(patientRepository.save(updated));
+    }
+
+    @Override
+    public List<PatientAlzheimerDTO> findByNom(String nom) {
+        return patientAlzheimerRepository.findByNomContainingIgnoreCase(nom)
+                .stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -56,7 +56,8 @@ public class SecurityConfig {
                                 "/auth/login",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/patient/usld/search/**"
                         ).permitAll() // accès libre aux routes Swagger + login/register
                         .anyRequest().authenticated() // le reste est sécurisé
 

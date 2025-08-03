@@ -4,8 +4,10 @@ import com.example.demo.Dto.PatientUSLDDTO;
 import com.example.demo.Service.PatientUSLDService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -49,5 +51,24 @@ public class PatientUSLDController {
     public List<PatientUSLDDTO> findByNom(@RequestParam String nom) {
         return service.findByNom(nom);
     }
+
+    @GetMapping("/search/prenom")
+    public List<PatientUSLDDTO>findByPrenom(@RequestParam String prenom){
+        return service.findByPrenom(prenom);
+    }
+    @GetMapping("/search/date-naissance")
+    public List<PatientUSLDDTO>findByDateNaissance(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                   LocalDate dateNaissance){
+        return service.findByDateNaissance(dateNaissance);
+    }
+    @GetMapping("/search/chambre")
+    public List<PatientUSLDDTO>findByNumeroChambre(@RequestParam Integer numeroChambre){
+        return service.findByNumeroChambre(numeroChambre);
+    }
+    @GetMapping("/search/autonomie")
+    public List<PatientUSLDDTO>findByNiveauAutonomie(@RequestParam String niveauAutonomie){
+        return service.findByNiveauAutonomie(niveauAutonomie);
+    }
+
 
 }

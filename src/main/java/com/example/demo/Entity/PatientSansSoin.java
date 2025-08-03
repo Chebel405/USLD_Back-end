@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+//PatientSansSoin hérite de la class Patient
 public class PatientSansSoin extends Patient {
     // Aucun champ spécifique pour ce type
 }

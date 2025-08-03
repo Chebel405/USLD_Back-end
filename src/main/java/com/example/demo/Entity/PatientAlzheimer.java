@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+//PatientAlzheimer hérite de la class Patient
 public class PatientAlzheimer extends Patient {
 
     private String stadeMaladie;

@@ -4,14 +4,17 @@ package com.example.demo.ServiceImpl;
 import com.example.demo.Dto.PatientAlzheimerDTO;
 import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Entity.PatientAlzheimer;
+import com.example.demo.Entity.PatientUSLD;
 import com.example.demo.Mapper.PatientMapper;
 import com.example.demo.Repository.PatientAlzheimerRepository;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.PatientSansSoinRepository;
+import com.example.demo.Repository.PatientUSLDRepository;
 import com.example.demo.Service.PatientAlzheimerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,7 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
 
     @Autowired
     private PatientRepository patientRepository;
+
 
     @Autowired
     private PatientAlzheimerRepository patientAlzheimerRepository;
@@ -64,7 +68,36 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
     }
 
     @Override
+    public List<PatientAlzheimerDTO> findByPrenom(String prenom) {
+        return patientAlzheimerRepository.findByPrenomContainingIgnoreCase(prenom).stream()
+                .map(p -> PatientMapper.toDTO((PatientAlzheimer) p))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientAlzheimerDTO> findByDateNaissance(LocalDate dateNaissance) {
+        return patientAlzheimerRepository.findByDateNaissance(dateNaissance).stream()
+                .map(p -> PatientMapper.toDTO((PatientAlzheimer) p))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientAlzheimerDTO> findByNumeroChambre(Integer numeroChambre) {
+        return patientAlzheimerRepository.findByNumeroChambre(numeroChambre).stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientAlzheimerDTO> findByNiveauAutonomie(String niveau) {
+        return patientAlzheimerRepository.findByNiveauAutonomieContainingIgnoreCase(niveau).stream()
+                .map(PatientMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void delete(Long id) {
+
         patientRepository.deleteById(id);
     }
 }

@@ -5,6 +5,7 @@ import com.example.demo.Dto.PatientUSLDDTO;
 import com.example.demo.Entity.PatientUSLD;
 import com.example.demo.Mapper.PatientMapper;
 import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.PatientUSLDRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,10 @@ public class PatientUSLDServiceImplTest {
 
     @Mock
     private PatientRepository patientRepository;
+
+    @Mock
+    private PatientUSLDRepository patientUSLDRepository;
+
 
     @InjectMocks
     private PatientUSLDServiceImpl patientUSLDService;
@@ -46,14 +51,14 @@ public class PatientUSLDServiceImplTest {
         savedEntity.setPrenom("Claire");
         savedEntity.setDateNaissance(LocalDate.of(1985, 3, 15));
 
-        when(patientRepository.save(any(PatientUSLD.class))).thenReturn(savedEntity);
+        when(patientUSLDRepository.save(any(PatientUSLD.class))).thenReturn(savedEntity);
 
         PatientUSLDDTO result = patientUSLDService.create(inputDto);
 
         assertNotNull(result);
         assertEquals("Dupont", result.getNom());
         assertEquals("Claire", result.getPrenom());
-        verify(patientRepository).save(any(PatientUSLD.class));
+        verify(patientUSLDRepository).save(any(PatientUSLD.class));
     }
 
     @Test
@@ -63,7 +68,7 @@ public class PatientUSLDServiceImplTest {
         entity.setId(id);
         entity.setNom("Test");
 
-        when(patientRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(patientUSLDRepository.findById(id)).thenReturn(Optional.of(entity));
 
         PatientUSLDDTO result = patientUSLDService.findById(id);
 
@@ -74,7 +79,7 @@ public class PatientUSLDServiceImplTest {
     @Test
     void testFindById_whenNotFound_shouldThrowException() {
         Long id = 99L;
-        when(patientRepository.findById(id)).thenReturn(Optional.empty());
+        when(patientUSLDRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> patientUSLDService.findById(id));
     }
@@ -82,11 +87,11 @@ public class PatientUSLDServiceImplTest {
     @Test
     void testDelete_shouldCallRepository() {
         Long id = 2L;
-        doNothing().when(patientRepository).deleteById(id);
+        doNothing().when(patientUSLDRepository).deleteById(id);
 
         patientUSLDService.delete(id);
 
-        verify(patientRepository).deleteById(id);
+        verify(patientUSLDRepository).deleteById(id);
     }
 
     @Test
@@ -99,7 +104,7 @@ public class PatientUSLDServiceImplTest {
         p2.setId(2L);
         p2.setNom("USLD2");
 
-        when(patientRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(patientUSLDRepository.findAll()).thenReturn(List.of(p1, p2));
 
         List<PatientUSLDDTO> results = patientUSLDService.findAll();
 
@@ -116,8 +121,8 @@ public class PatientUSLDServiceImplTest {
         PatientUSLDDTO dto = new PatientUSLDDTO();
         dto.setNom("NouveauNom");
 
-        when(patientRepository.findById(id)).thenReturn(Optional.of(existing));
-        when(patientRepository.save(any(PatientUSLD.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(patientUSLDRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(patientUSLDRepository.save(any(PatientUSLD.class))).thenAnswer(inv -> inv.getArgument(0));
 
         PatientUSLDDTO result = patientUSLDService.update(id, dto);
 

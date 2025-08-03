@@ -1,13 +1,14 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Dto.PatientAlzheimerDTO;
-import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Service.PatientAlzheimerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -45,6 +46,26 @@ public class PatientAlzheimerController {
     public ResponseEntity<List<PatientAlzheimerDTO>> findByNom(@RequestParam String nom) {
         return ResponseEntity.ok(service.findByNom(nom));
     }
+    @GetMapping("/search/prenom")
+    public List<PatientAlzheimerDTO>findByPrenom(@RequestParam String prenom){
+        return service.findByPrenom(prenom);
+    }
+
+
+    @GetMapping("/search/date-naissance")
+    public List<PatientAlzheimerDTO>findByDateNaissance(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                   LocalDate dateNaissance){
+        return service.findByDateNaissance(dateNaissance);
+    }
+    @GetMapping("/search/chambre")
+    public List<PatientAlzheimerDTO>findByNumeroChambre(@RequestParam Integer numeroChambre){
+        return service.findByNumeroChambre(numeroChambre);
+    }
+    @GetMapping("/search/autonomie")
+    public List<PatientAlzheimerDTO>findByNiveauAutonomie(@RequestParam String niveauAutonomie){
+        return service.findByNiveauAutonomie(niveauAutonomie);
+    }
+
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {

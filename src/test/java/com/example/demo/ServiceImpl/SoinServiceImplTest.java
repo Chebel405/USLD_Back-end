@@ -3,6 +3,7 @@ package com.example.demo.ServiceImpl;
 
 import com.example.demo.Dto.SoinDTO;
 import com.example.demo.Entity.Patient;
+import com.example.demo.Entity.PatientUSLD;
 import com.example.demo.Entity.Soignant;
 import com.example.demo.Entity.Soin;
 import com.example.demo.Enums.TypeSoins;
@@ -62,8 +63,9 @@ public class SoinServiceImplTest {
         inputDto.setSoignantId(2L);
 
         // Création des entités fictives associées
-        Patient patient = new Patient();
-        patient.setId(1L);
+       // Patient patient = new Patient();
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
 
         Soignant soignant = new Soignant();
         soignant.setId(2L);
@@ -73,7 +75,7 @@ public class SoinServiceImplTest {
         mappedSoin.setDate(inputDto.getDate());
         mappedSoin.setType(inputDto.getType());
         mappedSoin.setDescription(inputDto.getDescription());
-        mappedSoin.setPatient(patient);
+        mappedSoin.setPatient(patientUSLD);
         mappedSoin.setSoignant(soignant);
 
         // Soin sauvegardé simulé (avec ID généré)
@@ -82,11 +84,11 @@ public class SoinServiceImplTest {
         savedSoin.setDate(inputDto.getDate());
         savedSoin.setType(inputDto.getType());
         savedSoin.setDescription(inputDto.getDescription());
-        savedSoin.setPatient(patient);
+        savedSoin.setPatient(patientUSLD);
         savedSoin.setSoignant(soignant);
 
         // --- MOCK --- des dépendances
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patientUSLD));
         when(soignantRepository.findById(2L)).thenReturn(Optional.of(soignant));
         when(soinRepository.save(any(Soin.class))).thenReturn(savedSoin);
 
@@ -113,8 +115,9 @@ public class SoinServiceImplTest {
     @Test
     void testFindAll_shouldReturnListOfSoinDTO() {
         // --- ARRANGE --- Création des entités fictives
-        Patient patient = new Patient();
-        patient.setId(1L);
+        //Patient patient = new Patient();
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
         Soignant soignant = new Soignant();
         soignant.setId(2L);
 
@@ -123,7 +126,7 @@ public class SoinServiceImplTest {
         soin1.setDate(LocalDate.of(2025, 6, 15));
         soin1.setType(TypeSoins.KINESITHERAPIE);
         soin1.setDescription("Séance kiné");
-        soin1.setPatient(patient);
+        soin1.setPatient(patientUSLD);
         soin1.setSoignant(soignant);
 
         Soin soin2 = new Soin();
@@ -131,7 +134,7 @@ public class SoinServiceImplTest {
         soin2.setDate(LocalDate.of(2025, 6, 16));
         soin2.setType(TypeSoins.PSYCHOLOGIE);
         soin2.setDescription("Suivi psy");
-        soin2.setPatient(patient);
+        soin2.setPatient(patientUSLD);
         soin2.setSoignant(soignant);
 
         List<Soin> soins = List.of(soin1, soin2);
@@ -183,8 +186,8 @@ public class SoinServiceImplTest {
         inputDto.setPatientId(1L);
         inputDto.setSoignantId(2L);
 
-        Patient patient = new Patient();
-        patient.setId(1L);
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
 
         Soignant soignant = new Soignant();
         soignant.setId(2L);
@@ -196,7 +199,7 @@ public class SoinServiceImplTest {
         existingSoin.setDescription("Ancienne description");
 
         when(soinRepository.findById(id)).thenReturn(Optional.of(existingSoin));
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patientUSLD));
         when(soignantRepository.findById(2L)).thenReturn(Optional.of(soignant));
         when(soinRepository.save(any(Soin.class))).thenAnswer(invocation -> invocation.getArgument(0));
 

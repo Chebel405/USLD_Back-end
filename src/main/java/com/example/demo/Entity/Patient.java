@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 
-public class Patient {
+public abstract class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

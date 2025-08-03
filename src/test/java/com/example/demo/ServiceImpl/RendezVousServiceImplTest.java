@@ -1,10 +1,7 @@
 package com.example.demo.ServiceImpl;
 
 import com.example.demo.Dto.RendezVousDTO;
-import com.example.demo.Entity.Patient;
-import com.example.demo.Entity.RendezVous;
-import com.example.demo.Entity.Soignant;
-import com.example.demo.Entity.Soin;
+import com.example.demo.Entity.*;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.RendezVousRepository;
 import com.example.demo.Repository.SoignantRepository;
@@ -59,8 +56,10 @@ public class RendezVousServiceImplTest {
         inputDto.setSoignantId(2L);
         inputDto.setSoinId(3L);
 
-        Patient patient = new Patient();
-        patient.setId(1L);
+
+        // Patient patient = new Patient();
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
 
         Soignant soignant = new Soignant();
         soignant.setId(2L);
@@ -72,12 +71,12 @@ public class RendezVousServiceImplTest {
         rendezVous.setId(10L);
         rendezVous.setDateHeure(inputDto.getDateHeure());
         rendezVous.setMotif(inputDto.getMotif());
-        rendezVous.setPatient(patient);
+        rendezVous.setPatient(patientUSLD);
         rendezVous.setSoignant(soignant);
         rendezVous.setSoin(soin);
 
 // MOCK
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patientUSLD));
         when(soignantRepository.findById(2L)).thenReturn(Optional.of(soignant));
         when(soinRepository.findById(3L)).thenReturn(Optional.of(soin));
         when(rendezVousRepository.save(any(RendezVous.class))).thenReturn(rendezVous);
@@ -101,8 +100,8 @@ public class RendezVousServiceImplTest {
 
         Long id = 10L;
 
-        Patient patient = new Patient();
-        patient.setId(1L);
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
         Soignant soignant = new Soignant();
         soignant.setId(2L);
         Soin soin = new Soin();
@@ -112,7 +111,7 @@ public class RendezVousServiceImplTest {
         rendezVous.setId(id);
         rendezVous.setDateHeure(LocalDateTime.of(2025, 7, 10, 9, 0));
         rendezVous.setMotif("Radiologie");
-        rendezVous.setPatient(patient);
+        rendezVous.setPatient(patientUSLD);
         rendezVous.setSoignant(soignant);
         rendezVous.setSoin(soin);
 
@@ -145,8 +144,8 @@ public class RendezVousServiceImplTest {
         inputDto.setSoignantId(2L);
         inputDto.setSoinId(3L);
 
-        Patient patient = new Patient();
-        patient.setId(1L);
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
 
         Soignant soignant = new Soignant();
         soignant.setId(2L);
@@ -158,12 +157,12 @@ public class RendezVousServiceImplTest {
         existingRdv.setId(id);
         existingRdv.setDateHeure(LocalDateTime.of(2025,7,1,9,0));
         existingRdv.setMotif("Ancien motif");
-        existingRdv.setPatient(patient);
+        existingRdv.setPatient(patientUSLD);
         existingRdv.setSoignant(soignant);
         existingRdv.setSoin(soin);
 
         when(rendezVousRepository.findById(id)).thenReturn(Optional.of(existingRdv));
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patientUSLD));
         when(soignantRepository.findById(2L)).thenReturn(Optional.of(soignant));
         when(soinRepository.findById(3L)).thenReturn(Optional.of(soin));
         when(rendezVousRepository.save(any(RendezVous.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -229,8 +228,8 @@ public class RendezVousServiceImplTest {
     @Test
     void testGetAllRendezVous() {
         // ARRANGE
-        Patient patient = new Patient();
-        patient.setId(1L);
+        PatientUSLD patientUSLD = new PatientUSLD();
+        patientUSLD.setId(1L);
 
         Soignant soignant = new Soignant();
         soignant.setId(2L);
@@ -242,7 +241,7 @@ public class RendezVousServiceImplTest {
         rdv1.setId(1L);
         rdv1.setMotif("Consultation");
         rdv1.setDateHeure(LocalDateTime.of(2025, 6, 20, 10, 0));
-        rdv1.setPatient(patient);
+        rdv1.setPatient(patientUSLD);
         rdv1.setSoignant(soignant);
         rdv1.setSoin(soin);
 
@@ -250,7 +249,7 @@ public class RendezVousServiceImplTest {
         rdv2.setId(2L);
         rdv2.setMotif("Examen");
         rdv2.setDateHeure(LocalDateTime.of(2025, 6, 21, 11, 0));
-        rdv2.setPatient(patient);
+        rdv2.setPatient(patientUSLD);
         rdv2.setSoignant(soignant);
         rdv2.setSoin(soin);
 

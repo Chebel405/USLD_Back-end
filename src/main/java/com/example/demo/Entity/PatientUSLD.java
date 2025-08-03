@@ -9,12 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+//PatientUSLD hérite de la class Patient
 public class PatientUSLD extends Patient {
 
-    private Integer numeroChambre;
-    private String niveauAutonomie;
 
-    private Boolean toiletteAssistee;
-    private Boolean aideHabillage;
-    private Boolean aideRepas;
 }

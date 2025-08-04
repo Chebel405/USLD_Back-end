@@ -19,6 +19,7 @@ public class PatientMapper {
         dto.setToiletteAssistee(patient.getToiletteAssistee());
         dto.setAideHabillage(patient.getAideHabillage());
         dto.setAideRepas(patient.getAideRepas());
+        dto.setTypePatient("USLD");
         return dto;
     }
 
@@ -49,6 +50,7 @@ public class PatientMapper {
         dto.setDateNaissance(patient.getDateNaissance());
         dto.setStadeMaladie(patient.getStadeMaladie());
         dto.setSuiviPsychologue(patient.getSuiviPsychologue());
+        dto.setTypePatient("ALZHEIMER");
         return dto;
     }
 
@@ -74,6 +76,7 @@ public class PatientMapper {
         dto.setNom(patient.getNom());
         dto.setPrenom(patient.getPrenom());
         dto.setDateNaissance(patient.getDateNaissance());
+        dto.setTypePatient("SANS_SOIN");
         return dto;
     }
 

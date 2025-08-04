@@ -31,32 +31,32 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
     @Override
     public PatientAlzheimerDTO create(PatientAlzheimerDTO dto) {
         PatientAlzheimer entity = PatientMapper.toEntity(dto);
-        return PatientMapper.toDTO(patientRepository.save(entity));
+        return PatientMapper.toDTO(patientAlzheimerRepository.save(entity));
     }
 
     @Override
     public List<PatientAlzheimerDTO> findAll() {
-        return patientRepository.findAll().stream()
-                .filter(p -> p instanceof PatientAlzheimer)
-                .map(p -> PatientMapper.toDTO((PatientAlzheimer) p))
+        return patientAlzheimerRepository.findAll().stream()
+                .map(PatientMapper::toDTO)
                 .collect(Collectors.toList());
+
     }
 
     @Override
     public PatientAlzheimerDTO findById(Long id) {
-        PatientAlzheimer entity = (PatientAlzheimer) patientRepository.findById(id)
+        PatientAlzheimer entity = patientAlzheimerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient Alzheimer non trouvé"));
         return PatientMapper.toDTO(entity);
     }
 
     @Override
     public PatientAlzheimerDTO update(Long id, PatientAlzheimerDTO dto) {
-        PatientAlzheimer existing = (PatientAlzheimer) patientRepository.findById(id)
+        PatientAlzheimer existing = (PatientAlzheimer) patientAlzheimerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient Alzheimer non trouvé"));
 
         PatientAlzheimer updated = PatientMapper.toEntity(dto);
         updated.setId(existing.getId());
-        return PatientMapper.toDTO(patientRepository.save(updated));
+        return PatientMapper.toDTO(patientAlzheimerRepository.save(updated));
     }
 
     @Override
@@ -98,6 +98,6 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
     @Override
     public void delete(Long id) {
 
-        patientRepository.deleteById(id);
+        patientAlzheimerRepository.deleteById(id);
     }
 }

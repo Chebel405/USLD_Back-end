@@ -16,4 +16,6 @@ public class PatientUSLDDTO {
     private Boolean toiletteAssistee;
     private Boolean aideHabillage;
     private Boolean aideRepas;
+    private String typePatient;
+
 }

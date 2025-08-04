@@ -12,4 +12,6 @@ public class PatientAlzheimerDTO {
 
     private String stadeMaladie;
     private Boolean suiviPsychologue;
+    private String typePatient;
+
 }

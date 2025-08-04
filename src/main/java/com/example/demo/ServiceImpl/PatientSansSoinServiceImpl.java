@@ -29,32 +29,31 @@ public class PatientSansSoinServiceImpl implements PatientSansSoinService {
     @Override
     public PatientSansSoinDTO create(PatientSansSoinDTO dto) {
         PatientSansSoin entity = PatientMapper.toEntity(dto);
-        return PatientMapper.toDTO(patientRepository.save(entity));
+        return PatientMapper.toDTO(patientSansSoinRepository.save(entity));
     }
 
     @Override
     public List<PatientSansSoinDTO> findAll() {
-        return patientRepository.findAll().stream()
-                .filter(p -> p instanceof PatientSansSoin)
-                .map(p -> PatientMapper.toDTO((PatientSansSoin) p))
+        return patientSansSoinRepository.findAll().stream()
+                .map(PatientMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PatientSansSoinDTO findById(Long id) {
-        PatientSansSoin entity = (PatientSansSoin) patientRepository.findById(id)
+        PatientSansSoin entity = (PatientSansSoin) patientSansSoinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient Sans Soin non trouvé"));
         return PatientMapper.toDTO(entity);
     }
 
     @Override
     public PatientSansSoinDTO update(Long id, PatientSansSoinDTO dto) {
-        PatientSansSoin existing = (PatientSansSoin) patientRepository.findById(id)
+        PatientSansSoin existing = (PatientSansSoin) patientSansSoinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient Sans Soin non trouvé"));
 
         PatientSansSoin updated = PatientMapper.toEntity(dto);
         updated.setId(existing.getId());
-        return PatientMapper.toDTO(patientRepository.save(updated));
+        return PatientMapper.toDTO(patientSansSoinRepository.save(updated));
     }
     @Override
     public List<PatientSansSoinDTO> findByNom(String nom) {
@@ -94,6 +93,6 @@ public class PatientSansSoinServiceImpl implements PatientSansSoinService {
 
     @Override
     public void delete(Long id) {
-        patientRepository.deleteById(id);
+        patientSansSoinRepository.deleteById(id);
     }
 }

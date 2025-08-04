@@ -9,4 +9,6 @@ public class PatientSansSoinDTO {
     private String nom;
     private String prenom;
     private LocalDate dateNaissance;
+    private String typePatient;
+
 }

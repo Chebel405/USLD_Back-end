@@ -3,6 +3,8 @@ package com.example.demo.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import com.example.demo.Enums.Role;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,5 +24,9 @@ public class Utilisateur {
 
     @Column(nullable = false)
     private String motDePasse;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 
 }

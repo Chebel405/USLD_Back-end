@@ -1,6 +1,9 @@
 package com.example.demo.Authentification;
 
 import com.example.demo.Entity.Utilisateur;
+
+import com.example.demo.Enums.Role;
+
 import com.example.demo.Repository.UtilisateurRepository;
 import com.example.demo.Security.Jwt.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,11 +35,12 @@ public class AuthentificationServiceImpl implements AuthentificationService {
      */
     @Override
     public AuthentificationResponseDTO register(RegisterRequestDTO request) {
-        // Création d’un nouvel utilisateur avec mot de passe encodé
+        // Création d’un nouvel utilisateur avec mot de passe encodé et rôle USER par défaut
         Utilisateur utilisateur = Utilisateur.builder()
                 .nom(request.getNom())
                 .email(request.getEmail())
                 .motDePasse(passwordEncoder.encode(request.getMotDePasse()))
+                .role(Role.USER)
                 .build();
 
         utilisateurRepository.save(utilisateur);

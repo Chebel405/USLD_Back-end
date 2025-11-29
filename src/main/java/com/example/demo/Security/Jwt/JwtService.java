@@ -1,5 +1,7 @@
 package com.example.demo.Security.Jwt;
 
+import com.example.demo.Entity.Utilisateur;
+import com.example.demo.Repository.UtilisateurRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -29,6 +33,12 @@ public class JwtService {
      */
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
+    private final UtilisateurRepository utilisateurRepository;
+
+    public JwtService(UtilisateurRepository utilisateurRepository) {
+        this.utilisateurRepository = utilisateurRepository;
+    }
+
     /**
      * Génère un token JWT basé sur l'email de l'utilisateur.
      *
@@ -36,7 +46,14 @@ public class JwtService {
      * @return JWT signé.
      */
     public String generateToken(String email) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", utilisateur.getRole().name());
+
         return Jwts.builder()
+                .setClaims(claims) // ⬅️ Ajoute les claims personnalisés
                 .setSubject(email)                      // Identifiant principal dans le token
                 .setIssuedAt(new Date(System.currentTimeMillis()))   // Date de création
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24h
@@ -52,6 +69,22 @@ public class JwtService {
      */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+
+    /**
+     * Extrait tous les claims (informations) présents dans le token.
+     *
+     * @param token JWT à analyser
+     * @return Les claims (payload) du token
+     */
+    public Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**

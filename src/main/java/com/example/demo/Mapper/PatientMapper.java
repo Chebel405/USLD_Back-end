@@ -48,9 +48,20 @@ public class PatientMapper {
         dto.setNom(patient.getNom());
         dto.setPrenom(patient.getPrenom());
         dto.setDateNaissance(patient.getDateNaissance());
+        //Champs spécifiques à Alzheimer
         dto.setStadeMaladie(patient.getStadeMaladie());
         dto.setSuiviPsychologue(patient.getSuiviPsychologue());
+
+        //Champs hérités
+        dto.setNumeroChambre(patient.getNumeroChambre());
+        dto.setNiveauAutonomie(patient.getNiveauAutonomie());
+        dto.setToiletteAssistee(patient.getToiletteAssistee());
+        dto.setAideHabillage(patient.getAideHabillage());
+        dto.setAideRepas(patient.getAideRepas());
+
         dto.setTypePatient("ALZHEIMER");
+
+
         return dto;
     }
 
@@ -62,8 +73,18 @@ public class PatientMapper {
         patient.setNom(dto.getNom());
         patient.setPrenom(dto.getPrenom());
         patient.setDateNaissance(dto.getDateNaissance());
+
+        //Champs Alzheimer
         patient.setStadeMaladie(dto.getStadeMaladie());
         patient.setSuiviPsychologue(dto.getSuiviPsychologue());
+
+        // Champs hérités
+        patient.setNumeroChambre(dto.getNumeroChambre());
+        patient.setNiveauAutonomie(dto.getNiveauAutonomie());
+        patient.setToiletteAssistee(dto.getToiletteAssistee());
+        patient.setAideHabillage(dto.getAideHabillage());
+        patient.setAideRepas(dto.getAideRepas());
+
         return patient;
     }
 

@@ -78,7 +78,7 @@ public class PatientSansSoinServiceImpl implements PatientSansSoinService {
     }
 
     @Override
-    public List<PatientSansSoinDTO> findByNumeroChambre(Integer numeroChambre) {
+    public List<PatientSansSoinDTO> findByNumeroChambre(String numeroChambre) {
         return patientSansSoinRepository.findByNumeroChambre(numeroChambre).stream()
                 .map(PatientMapper::toDTO)
                 .collect(Collectors.toList());

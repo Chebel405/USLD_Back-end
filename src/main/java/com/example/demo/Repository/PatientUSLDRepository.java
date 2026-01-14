@@ -20,7 +20,7 @@ public interface PatientUSLDRepository extends JpaRepository<PatientUSLD, Long> 
 
     List<PatientUSLD> findByDateNaissance(LocalDate dateNaissance);
 
-    List<PatientUSLD> findByNumeroChambre(Integer numeroChambre);
+    List<PatientUSLD> findByNumeroChambre(String numeroChambre);
 
     List<PatientUSLD> findByNiveauAutonomieContainingIgnoreCase(String niveauAutonomie);
 }

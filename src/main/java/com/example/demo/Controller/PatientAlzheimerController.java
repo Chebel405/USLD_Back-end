@@ -58,7 +58,7 @@ public class PatientAlzheimerController {
         return service.findByDateNaissance(dateNaissance);
     }
     @GetMapping("/search/chambre")
-    public List<PatientAlzheimerDTO>findByNumeroChambre(@RequestParam Integer numeroChambre){
+    public List<PatientAlzheimerDTO>findByNumeroChambre(@RequestParam String numeroChambre){
         return service.findByNumeroChambre(numeroChambre);
     }
     @GetMapping("/search/autonomie")

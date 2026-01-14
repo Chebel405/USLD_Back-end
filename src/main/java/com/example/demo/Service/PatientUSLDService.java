@@ -13,7 +13,7 @@ public interface PatientUSLDService {
     List<PatientUSLDDTO> findByNom(String nom);
     List<PatientUSLDDTO> findByPrenom(String prenom);
     List<PatientUSLDDTO> findByDateNaissance(LocalDate dateNaissance);
-    List<PatientUSLDDTO> findByNumeroChambre(Integer numeroChambre);
+    List<PatientUSLDDTO> findByNumeroChambre(String numeroChambre);
     List<PatientUSLDDTO> findByNiveauAutonomie(String niveau);
     void delete(Long id);
 }

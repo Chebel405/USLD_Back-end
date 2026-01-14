@@ -16,7 +16,7 @@ public interface PatientAlzheimerService {
     List<PatientAlzheimerDTO> findByNom(String nom);
     List<PatientAlzheimerDTO> findByPrenom(String prenom);
     List<PatientAlzheimerDTO> findByDateNaissance(LocalDate dateNaissance);
-    List<PatientAlzheimerDTO> findByNumeroChambre(Integer numeroChambre);
+    List<PatientAlzheimerDTO> findByNumeroChambre(String numeroChambre);
     List<PatientAlzheimerDTO> findByNiveauAutonomie(String niveau);
     void delete(Long id);
 }

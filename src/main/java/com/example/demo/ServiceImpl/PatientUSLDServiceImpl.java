@@ -20,6 +20,21 @@ public class PatientUSLDServiceImpl implements PatientUSLDService {
     @Autowired
     private PatientUSLDRepository patientUSLDRepository;
 
+    /**
+     * Nettoie les champs texte du DTO avant enregistrement ou mise à jour.
+     *
+     * 🎯 Objectif :
+     * - Supprimer les espaces inutiles en début et fin de chaîne (ex : "Montagne ")
+     * - Éviter les incohérences en base de données
+     * - Garantir le bon fonctionnement des recherches (contains / ignoreCase)
+     *
+     * Cette méthode est appelée dans create() et update().
+     */
+    private void nettoyerChampsTexte(PatientUSLDDTO dto) {
+        if (dto.getNom() != null) dto.setNom(dto.getNom().trim());
+        if (dto.getPrenom() != null) dto.setPrenom(dto.getPrenom().trim());
+        if (dto.getNiveauAutonomie() != null) dto.setNiveauAutonomie(dto.getNiveauAutonomie().trim());
+    }
     @Override
     public PatientUSLDDTO create(PatientUSLDDTO dto) {
         PatientUSLD entity = PatientMapper.toEntity(dto);
@@ -76,7 +91,7 @@ public class PatientUSLDServiceImpl implements PatientUSLDService {
     }
 
     @Override
-    public List<PatientUSLDDTO> findByNumeroChambre(Integer numeroChambre) {
+    public List<PatientUSLDDTO> findByNumeroChambre(String numeroChambre) {
         return patientUSLDRepository.findByNumeroChambre(numeroChambre).stream()
                 .map(PatientMapper::toDTO)
                 .collect(Collectors.toList());

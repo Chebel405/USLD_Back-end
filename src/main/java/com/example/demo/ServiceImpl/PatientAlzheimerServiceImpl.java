@@ -82,7 +82,7 @@ public class PatientAlzheimerServiceImpl implements PatientAlzheimerService {
     }
 
     @Override
-    public List<PatientAlzheimerDTO> findByNumeroChambre(Integer numeroChambre) {
+    public List<PatientAlzheimerDTO> findByNumeroChambre(String numeroChambre) {
         return patientAlzheimerRepository.findByNumeroChambre(numeroChambre).stream()
                 .map(PatientMapper::toDTO)
                 .collect(Collectors.toList());

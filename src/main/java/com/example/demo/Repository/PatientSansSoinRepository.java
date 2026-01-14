@@ -13,7 +13,7 @@ public interface PatientSansSoinRepository extends JpaRepository<PatientSansSoin
 
     List<PatientSansSoin> findByDateNaissance(LocalDate dateNaissance);
 
-    List<PatientSansSoin> findByNumeroChambre(Integer numeroChambre);
+    List<PatientSansSoin> findByNumeroChambre(String numeroChambre);
 
     List<PatientSansSoin> findByNiveauAutonomieContainingIgnoreCase(String niveauAutonomie);
 }

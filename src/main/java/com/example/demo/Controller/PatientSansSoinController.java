@@ -57,7 +57,7 @@ public class PatientSansSoinController {
         return service.findByDateNaissance(dateNaissance);
     }
     @GetMapping("/search/chambre")
-    public List<PatientSansSoinDTO>findByNumeroChambre(@RequestParam Integer numeroChambre){
+    public List<PatientSansSoinDTO>findByNumeroChambre(@RequestParam String numeroChambre){
         return service.findByNumeroChambre(numeroChambre);
     }
     @GetMapping("/search/autonomie")

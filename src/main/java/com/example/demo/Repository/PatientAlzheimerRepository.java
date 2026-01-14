@@ -13,7 +13,7 @@ public interface PatientAlzheimerRepository extends JpaRepository<PatientAlzheim
 
     List<PatientAlzheimer> findByDateNaissance(LocalDate dateNaissance);
 
-    List<PatientAlzheimer> findByNumeroChambre(Integer numeroChambre);
+    List<PatientAlzheimer> findByNumeroChambre(String numeroChambre);
 
     List<PatientAlzheimer> findByNiveauAutonomieContainingIgnoreCase(String niveauAutonomie);
 }

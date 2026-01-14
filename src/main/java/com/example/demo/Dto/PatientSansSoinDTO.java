@@ -9,7 +9,7 @@ public class PatientSansSoinDTO {
     private String nom;
     private String prenom;
     private LocalDate dateNaissance;
-    private Integer numeroChambre;
+    private String numeroChambre;
     private String niveauAutonomie;
 
     private Boolean toiletteAssistee;

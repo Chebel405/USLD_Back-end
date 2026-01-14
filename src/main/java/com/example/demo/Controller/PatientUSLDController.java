@@ -62,7 +62,7 @@ public class PatientUSLDController {
         return service.findByDateNaissance(dateNaissance);
     }
     @GetMapping("/search/chambre")
-    public List<PatientUSLDDTO>findByNumeroChambre(@RequestParam Integer numeroChambre){
+    public List<PatientUSLDDTO>findByNumeroChambre(@RequestParam String numeroChambre){
         return service.findByNumeroChambre(numeroChambre);
     }
     @GetMapping("/search/autonomie")

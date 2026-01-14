@@ -35,7 +35,7 @@ public abstract class Patient {
 
     private LocalDate dateNaissance;
 
-    private Integer numeroChambre;
+    private String numeroChambre;
     private String niveauAutonomie;
 
     private Boolean toiletteAssistee;

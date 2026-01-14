@@ -58,15 +58,12 @@ public class SecurityConfig {
                                 "/auth/login",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/patients/alzheimer/**",
-                                "/patients/sanssoin/**",
-                                "/patients/usld/**",
-                                "/patients/tous"
-                        ).permitAll() // accès libre aux routes Swagger + login/register
-                        .anyRequest().authenticated() // le reste est sécurisé
-
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers("/patients/**").authenticated()
+                        .anyRequest().authenticated()
                 )
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // pas de session
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

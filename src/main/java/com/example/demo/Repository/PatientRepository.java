@@ -1,22 +1,33 @@
 package com.example.demo.Repository;
 
 import com.example.demo.Entity.Patient;
-import com.example.demo.Entity.PatientUSLD;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Repository JPA pour tous types de patients (USLD, Alzheimer, Sans Soin…).
+ * Repository JPA pour tous les types de patients (USLD, Alzheimer, Sans Soin…).
  *
- * ✅ Contient des méthodes génériques utilisables pour tous les Patient concret
- * (recherches sur champ commun comme nom, prénom, etc.).
- * Utilisé notamment pour des pages de recherche globales sans distinction de type.
+ * ✅ Peut être utilisé :
+ * - soit avec des méthodes findBy... classiques
+ * - soit avec des Specifications via JpaSpecificationExecutor
+ *
+ * 👉 Pour le moment, la recherche avancée utilise Specification,
+ * mais ces méthodes sont conservées pour référence ou usage futur.
  */
-@Repository
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface PatientRepository
+        extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
+
     List<Patient> findByNomContainingIgnoreCase(String nom);
 
+    List<Patient> findByPrenomContainingIgnoreCase(String prenom);
+
+    List<Patient> findByDateNaissance(LocalDate dateNaissance);
+
+    List<Patient> findByNumeroChambre(String numeroChambre);
+
+    List<Patient> findByNiveauAutonomieContainingIgnoreCase(String niveauAutonomie);
 
 }

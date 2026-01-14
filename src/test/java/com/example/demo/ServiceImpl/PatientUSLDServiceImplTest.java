@@ -38,7 +38,7 @@ public class PatientUSLDServiceImplTest {
         inputDto.setNom("Dupont");
         inputDto.setPrenom("Claire");
         inputDto.setDateNaissance(LocalDate.of(1985, 3, 15));
-        inputDto.setNumeroChambre(101);
+        inputDto.setNumeroChambre("101");
         inputDto.setNiveauAutonomie("moyen");
         inputDto.setToiletteAssistee(true);
         inputDto.setAideHabillage(true);

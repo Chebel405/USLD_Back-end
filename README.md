@@ -1,36 +1,66 @@
-# 🏥 USLD_Back-end – Gestion des Soignants, Patients, Soins et Rendez-vous
+🏥 USLD_Back-end – Gestion des Patients, Soignants, Soins et Rendez-vous
 
-Ce dépôt contient le **backend** de l'application *USLD* (*Unité de Soins de Longue Durée*), développée avec **Spring Boot 3**.  
-Il fournit une API REST pour gérer les patients, les soignants, les soins et les rendez-vous médicaux.
+Ce dépôt contient le backend de l’application **Patient – Gestion des patients USLD**, développée avec **Spring Boot 3**.
 
----
-
-## 🎯 Objectif du projet
-
-- 📋 Gestion des informations des **patients** (type USLD, Alzheimer, sans soins)
-- 👨‍⚕️ Gestion des **soignants** (association à plusieurs patients)
-- 📆 Gestion des **rendez-vous médicaux**
-- 💊 Suivi des **soins effectués**
-- 🔄 Association entre entités (relation bidirectionnelle)
-- 📦 Utilisation de **DTOs** pour contrôler les données exposées
-- 🔁 Mapping entité/DTO avec gestion des listes et objets liés
-- 💾 Persistance via **Spring Data JPA** avec gestion de la cohérence
+L’application fournit une **API REST sécurisée** permettant de gérer :
+- les patients (USLD, Alzheimer, Sans soin)
+- les soignants
+- les soins
+- les rendez-vous médicaux
 
 ---
 
-## 🗓️ Exemple d’appel API pour créer un rendez-vous
+## 🎯 Objectifs du projet
 
-```bash
-curl -X POST http://localhost:8081/rendezvous \
- -H "Content-Type: application/json" \
- -d '{
-    "dateHeure": "2025-07-01T10:30:00",
-    "motif": "Consultation ORL",
-    "patientId": 1,
-    "soignantId": 2,
-    "soinId": 1
-}'
-```
+- Centraliser la gestion des patients en USLD
+- Différencier les patients selon leur type médical
+- Garantir la sécurité des accès aux données
+- Proposer une architecture claire, évolutive et testée
+
+---
+
+## 📋 Fonctionnalités principales
+
+### 👤 Gestion des patients
+- Création, modification, suppression
+- Consultation détaillée
+- Séparation par type :
+  - PatientUSLD
+  - PatientAlzheimer
+  - PatientSansSoin
+- Recherche et filtrage (nom, prénom, type)
+
+### 👨‍⚕️ Gestion des soignants
+- Association à plusieurs patients
+- Gestion CRUD complète
+
+### 📆 Rendez-vous
+- Création et association à un patient et un soignant
+- Consultation et suppression
+
+### 💊 Soins
+- Ajout et suivi des soins
+- Association aux patients
+
+---
+
+## 🧱 Architecture & choix techniques
+
+- Architecture en couches :
+  - Controller
+  - Service
+  - Repository
+  - DTO
+  - Mapper
+  - Entity
+- Héritage JPA avec une classe abstraite `Patient`
+- Mapping DTO / Entity pour maîtriser les données exposées
+- Gestion centralisée des erreurs
+- Sécurité via **JWT**
+- Rôles : `ADMIN`, `USER`
+
+📘 Documentation fonctionnelle complète :  
+➡️ `docs/CAHIER_DES_CHARGES_PATIENT.md`
 
 ---
 
@@ -40,10 +70,12 @@ curl -X POST http://localhost:8081/rendezvous \
 - Spring Boot 3.4.5
 - Maven
 - Spring Web (REST API)
-- Spring Data JPA (persistances)
+- Spring Data JPA
+- Spring Security + JWT
 - H2 ou MySQL (selon configuration)
 - Lombok (facultatif)
-- Swagger (optionnel)
+- Swagger / OpenAPI 3
+- JUnit 5 & Mockito
 
 ---
 
@@ -51,12 +83,11 @@ curl -X POST http://localhost:8081/rendezvous \
 
 - Java JDK 21
 - Maven 3+
-- IDE comme IntelliJ ou VS Code
+- IDE (IntelliJ, VS Code…)
 
 ---
 
-## ▶️ Lancer l'application
+## ▶️ Lancer l’application
 
 ```bash
 ./mvnw spring-boot:run
-```

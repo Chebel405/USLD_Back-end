@@ -44,7 +44,7 @@ L’application fournit une **API REST sécurisée** permettant de gérer :
 
 ---
 
-## 🧱 Architecture & choix techniques
+## 🧱 Architecture ET choix techniques
 
 - Architecture en couches :
   - Controller

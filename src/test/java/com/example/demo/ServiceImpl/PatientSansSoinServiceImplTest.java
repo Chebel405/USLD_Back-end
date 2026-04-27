@@ -2,8 +2,7 @@ package com.example.demo.ServiceImpl;
 
 import com.example.demo.Dto.PatientSansSoinDTO;
 import com.example.demo.Entity.PatientSansSoin;
-import com.example.demo.Mapper.PatientMapper;
-import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.PatientSansSoinRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class PatientSansSoinServiceImplTest {
 
     @Mock
-    private PatientRepository patientRepository;
+    private PatientSansSoinRepository patientSansSoinRepository;
 
     @InjectMocks
     private PatientSansSoinServiceImpl patientSansSoinService;
@@ -33,20 +32,21 @@ public class PatientSansSoinServiceImplTest {
         inputDto.setPrenom("Julie");
         inputDto.setDateNaissance(LocalDate.of(1975, 4, 18));
 
-        PatientSansSoin entity = PatientMapper.toEntity(inputDto);
         PatientSansSoin savedEntity = new PatientSansSoin();
         savedEntity.setId(1L);
         savedEntity.setNom("Martin");
         savedEntity.setPrenom("Julie");
         savedEntity.setDateNaissance(LocalDate.of(1975, 4, 18));
 
-        when(patientRepository.save(any(PatientSansSoin.class))).thenReturn(savedEntity);
+        when(patientSansSoinRepository.save(any(PatientSansSoin.class))).thenReturn(savedEntity);
 
         PatientSansSoinDTO result = patientSansSoinService.create(inputDto);
 
         assertNotNull(result);
         assertEquals("Martin", result.getNom());
         assertEquals("Julie", result.getPrenom());
+
+        verify(patientSansSoinRepository).save(any(PatientSansSoin.class));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class PatientSansSoinServiceImplTest {
         entity.setId(1L);
         entity.setNom("Lemoine");
 
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(entity));
+        when(patientSansSoinRepository.findById(1L)).thenReturn(Optional.of(entity));
 
         PatientSansSoinDTO result = patientSansSoinService.findById(1L);
 
@@ -65,7 +65,7 @@ public class PatientSansSoinServiceImplTest {
 
     @Test
     void testFindByIdWhenNotFound() {
-        when(patientRepository.findById(77L)).thenReturn(Optional.empty());
+        when(patientSansSoinRepository.findById(77L)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             patientSansSoinService.findById(77L);
@@ -84,7 +84,7 @@ public class PatientSansSoinServiceImplTest {
         p2.setId(2L);
         p2.setNom("Claire");
 
-        when(patientRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(patientSansSoinRepository.findAll()).thenReturn(List.of(p1, p2));
 
         List<PatientSansSoinDTO> result = patientSansSoinService.findAll();
 
@@ -96,6 +96,7 @@ public class PatientSansSoinServiceImplTest {
     @Test
     void testUpdatePatient() {
         Long id = 1L;
+
         PatientSansSoin existing = new PatientSansSoin();
         existing.setId(id);
         existing.setNom("Ancien");
@@ -104,8 +105,8 @@ public class PatientSansSoinServiceImplTest {
         updatedDto.setNom("Nouveau");
         updatedDto.setPrenom("Lucas");
 
-        when(patientRepository.findById(id)).thenReturn(Optional.of(existing));
-        when(patientRepository.save(any(PatientSansSoin.class)))
+        when(patientSansSoinRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(patientSansSoinRepository.save(any(PatientSansSoin.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         PatientSansSoinDTO result = patientSansSoinService.update(id, updatedDto);
@@ -118,10 +119,10 @@ public class PatientSansSoinServiceImplTest {
     void testDelete() {
         Long id = 5L;
 
-        doNothing().when(patientRepository).deleteById(id);
+        doNothing().when(patientSansSoinRepository).deleteById(id);
 
         patientSansSoinService.delete(id);
 
-        verify(patientRepository).deleteById(id);
+        verify(patientSansSoinRepository).deleteById(id);
     }
 }

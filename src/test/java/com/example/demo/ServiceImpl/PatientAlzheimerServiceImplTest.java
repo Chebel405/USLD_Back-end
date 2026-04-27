@@ -3,7 +3,7 @@ package com.example.demo.ServiceImpl;
 import com.example.demo.Dto.PatientAlzheimerDTO;
 import com.example.demo.Entity.PatientAlzheimer;
 import com.example.demo.Mapper.PatientMapper;
-import com.example.demo.Repository.PatientRepository;
+import com.example.demo.Repository.PatientAlzheimerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class PatientAlzheimerServiceImplTest {
 
     @Mock
-    private PatientRepository patientRepository;
+    private PatientAlzheimerRepository patientAlzheimerRepository;
 
     @InjectMocks
     private PatientAlzheimerServiceImpl patientAlzheimerService;
@@ -45,7 +45,7 @@ public class PatientAlzheimerServiceImplTest {
         savedEntity.setStadeMaladie("Élevé");
         savedEntity.setSuiviPsychologue(true);
 
-        when(patientRepository.save(entity)).thenReturn(savedEntity);
+        when(patientAlzheimerRepository.save(any(PatientAlzheimer.class))).thenReturn(savedEntity);
 
         PatientAlzheimerDTO result = patientAlzheimerService.create(inputDto);
 
@@ -56,15 +56,16 @@ public class PatientAlzheimerServiceImplTest {
         assertEquals("Élevé", result.getStadeMaladie());
         assertTrue(result.getSuiviPsychologue());
 
-        verify(patientRepository).save(entity);
+        verify(patientAlzheimerRepository).save(any(PatientAlzheimer.class));
     }
+
     @Test
     void testFindByIdWhenExists() {
         PatientAlzheimer entity = new PatientAlzheimer();
         entity.setId(1L);
         entity.setNom("Dupont");
 
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(entity));
+        when(patientAlzheimerRepository.findById(1L)).thenReturn(Optional.of(entity));
 
         PatientAlzheimerDTO result = patientAlzheimerService.findById(1L);
 
@@ -74,7 +75,7 @@ public class PatientAlzheimerServiceImplTest {
 
     @Test
     void testFindByIdWhenNotFound() {
-        when(patientRepository.findById(99L)).thenReturn(Optional.empty());
+        when(patientAlzheimerRepository.findById(99L)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             patientAlzheimerService.findById(99L);
@@ -93,7 +94,7 @@ public class PatientAlzheimerServiceImplTest {
         p2.setId(2L);
         p2.setNom("Bob");
 
-        when(patientRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(patientAlzheimerRepository.findAll()).thenReturn(List.of(p1, p2));
 
         List<PatientAlzheimerDTO> result = patientAlzheimerService.findAll();
 
@@ -103,6 +104,7 @@ public class PatientAlzheimerServiceImplTest {
     @Test
     void testUpdatePatient() {
         Long id = 1L;
+
         PatientAlzheimer existing = new PatientAlzheimer();
         existing.setId(id);
         existing.setNom("Ancien");
@@ -111,8 +113,8 @@ public class PatientAlzheimerServiceImplTest {
         updatedDto.setNom("Nouveau");
         updatedDto.setStadeMaladie("Modéré");
 
-        when(patientRepository.findById(id)).thenReturn(Optional.of(existing));
-        when(patientRepository.save(any(PatientAlzheimer.class)))
+        when(patientAlzheimerRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(patientAlzheimerRepository.save(any(PatientAlzheimer.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         PatientAlzheimerDTO result = patientAlzheimerService.update(id, updatedDto);
@@ -125,10 +127,10 @@ public class PatientAlzheimerServiceImplTest {
     void testDelete() {
         Long id = 3L;
 
-        doNothing().when(patientRepository).deleteById(id);
+        doNothing().when(patientAlzheimerRepository).deleteById(id);
 
         patientAlzheimerService.delete(id);
 
-        verify(patientRepository).deleteById(id);
+        verify(patientAlzheimerRepository).deleteById(id);
     }
 }

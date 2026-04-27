@@ -5,9 +5,11 @@ stages:
 build-job:
   stage: build
   script:
+    -  chmod +x mvnw
     - ./mvnw clean compile
 
 test-job:
   stage: test
   script:
+    -  chmod +x mvnw
     - ./mvnw test

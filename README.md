@@ -76,6 +76,7 @@ L’application fournit une **API REST sécurisée** permettant de gérer :
 - Lombok (facultatif)
 - Swagger / OpenAPI 3
 - JUnit 5 & Mockito
+- GitHub Actions (CI/CD)
 
 ---
 
@@ -86,6 +87,27 @@ L’application fournit une **API REST sécurisée** permettant de gérer :
 - IDE (IntelliJ, VS Code…)
 
 ---
+## 🚀 Intégration Continue (CI/CD)
+
+Le projet utilise GitHub Actions pour automatiser la validation du code.
+
+### Pipeline actuel
+
+À chaque push sur la branche `main` :
+
+- Checkout du code source
+- Installation de Java 21
+- Configuration de Maven Wrapper
+- Compilation du projet
+- Exécution des tests unitaires
+- Génération du package Maven
+
+✅ Pipeline opérationnel et validé avec GitHub Actions.
+
+Fichier du workflow :
+
+.github/workflows/ci.yml
+
 
 ## ▶️ Lancer l’application
 

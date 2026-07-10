@@ -51,7 +51,12 @@ public abstract class Patient {
     private List<Soignant> soignants;
 
     @OneToMany(mappedBy = "patient")
+    private List<Traitement> traitements;
+
+    @OneToMany(mappedBy = "patient")
     private List<RendezVous> rendezVousList;
+
+
 
 
 
